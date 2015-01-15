@@ -17,7 +17,7 @@ une fois dans le Autosh choisi, vous pouvez:
 * n: Pour verifier la norme
 * m: Pour faire un `make re` du projet
 * o: Pour tester le projet
-* d: Pour supprimer certains fichier produit par l'Autosh ainsi qu'un `make fclean`
+* d: Pour supprimer certains fichiers produits par l'Autosh ainsi qu'un `make fclean`
 * p: Pour modifier certaines options
 * q: Pour quitter le Autosh
 
@@ -25,14 +25,24 @@ une fois dans le Autosh choisi, vous pouvez:
 
 ###Pour tester ft_printf [*(autoft_printf)*][autoft_printf]
 Dans l'option *o* vous pouvez creer vos propres tests et les sauvegarder
+*Incomplet*
+
+###Pour tester ft_ls [*(autoft_ls)*][autoft_ls]
+*Incomplet*
+
+###Pour tester get_next_line [*(autoget_next_line)*][autoget_next_line]
+Ancien Autosh, ne dispose pas de git clone ni de menu
+*Incomplet*
 
 Contributions sur les Autosh
 ----------------------------
+*Incomplet*
 
 Creer un Autosh [*(autoref.sh)*][autoref]
 ---------------
-
 *Incomplet*
 
 [autoft_printf]: https://github.com/clegrand/autosh "Lien vers le fichier autoft_printf.sh"
+[autoft_ls]: https://github.com/clegrand/autosh/t_ft_ls "Lien vers le fichier autoft_ls.sh"
+[autoget_next_line]: https://github.com/clegrand/autosh/t_get_next_line "Lien vers le fichier autoget_next_line.sh"
 [autoref]: https://github.com/clegrand/autosh "Lien vers le fichier Autosh de reference"
