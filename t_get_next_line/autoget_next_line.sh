@@ -6,7 +6,7 @@
 #    By: clegrand <clegrand@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2014/11/09 17:36:46 by clegrand          #+#    #+#              #
-#    Updated: 2015/01/15 18:41:55 by clegrand         ###   ########.fr        #
+#    Updated: 2015/01/15 19:11:28 by clegrand         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -155,9 +155,7 @@ elif [ ${fonc} = 0 ]; then
 else
 	echo "${RED}OH NO !!! X( Fonction exit ! ${NC}"
 fi
-${EBROWN}
-echo "Continue for standard file ? yes: 'y' or no: (other)"
-${ENC}
+echo "${BROWN}Continue for standard file ? yes: 'y' or no: (other)${NC}"
 read -s -n 1 choice2
 if [ ${choice2} = y ]; then
 	echo "${BLUE}_On stdin_____. ${NC}"
@@ -179,15 +177,15 @@ if [ ${choice2} = y ]; then
 	else
 		echo "${RED}OH NO !!! X( Fonction exit ! ${NC}"
 	fi
-
-	echo "${BROWN}\nCheck differences with function diff ?"
-	echo "      y: for yes"
-	echo "(other): for no${NC}"
-	read -s -n 1 choice
 fi
 
+echo "${BROWN}\nCheck differences with function diff ?"
+echo "      y: for yes"
+echo "(other): for no${NC}"
+read -s -n 1 choice
+
 # CHECK DIFF
-if [ ${choice} = 'y' ]; then
+if [ ${choice} = y ]; then
 	echo "${BLUE}\n/CHECK DIFFERENCE\\_____. ${NC}"
 	if [ -d $1/libft ]; then
 		make -C $1/libft/ fclean
@@ -259,6 +257,6 @@ view $1/get_next_line.c $1/get_next_line.h
 if [ -d $1/libft ]; then
 	view $1/libft/includes/libft.h
 	make -C $1/libft fclean
-	echo "libft content: ${BROWN}`ls -1 $1/libft/*.c | wc -l | tr -d' '` ${NC}function(s)"
+	echo "libft content: ${BROWN}$(ls -1 $1/libft/*.c | wc -l | tr -d ' ') ${NC}function(s)"
 fi
 echo "${BLUE}END OF TEST, thanks and see you soon ;) ${NC}"
