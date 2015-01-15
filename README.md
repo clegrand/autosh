@@ -24,14 +24,14 @@ une fois dans le Autosh choisi, vous pouvez:
 > Pour l'option *o* chaque Autosh ont leurs facon de l'utiliser, veuillez vous referer a l'Autosh que vous avez choisi pour en savoir plus dessus
 
 ###Pour tester ft_printf [*(autoft_printf)*][autoft_printf]
-Dans l'option *o* vous pouvez creer vos propres tests et les sauvegarder
+Dans l'option *o* vous pouvez creer vos propres tests et les sauvegarder  
 *Incomplet*
 
 ###Pour tester ft_ls [*(autoft_ls)*][autoft_ls]
 *Incomplet*
 
 ###Pour tester get_next_line [*(autoget_next_line)*][autoget_next_line]
-Ancien Autosh, ne dispose pas de git clone ni de menu
+Ancien Autosh, ne dispose pas de git clone ni de menu  
 *Incomplet*
 
 Contributions sur les Autosh
@@ -42,7 +42,7 @@ Creer un Autosh [*(autoref.sh)*][autoref]
 ---------------
 *Incomplet*
 
-[autoft_printf]: https://github.com/clegrand/autosh "Lien vers le fichier autoft_printf.sh"
+[autoft_printf]: https://github.com/clegrand/autosh/tree/master/t_ft_printf "Lien vers le fichier autoft_printf.sh"
 [autoft_ls]: https://github.com/clegrand/autosh/tree/master/t_ft_ls "Lien vers le fichier autoft_ls.sh"
 [autoget_next_line]: https://github.com/clegrand/autosh/tree/master/t_get_next_line "Lien vers le fichier autoget_next_line.sh"
 [autoref]: https://github.com/clegrand/autosh "Lien vers le fichier Autosh de reference"
