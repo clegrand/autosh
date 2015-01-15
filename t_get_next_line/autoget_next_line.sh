@@ -6,7 +6,7 @@
 #    By: clegrand <clegrand@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2014/11/09 17:36:46 by clegrand          #+#    #+#              #
-#    Updated: 2015/01/05 20:02:44 by clegrand         ###   ########.fr        #
+#    Updated: 2015/01/15 18:41:55 by clegrand         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,13 +21,18 @@ ENC='echo \033[0;37m'
 
 # Please check if main test is well within the directory
 MAIN='main3'
+MAINA='main5'
 MAINS='mainl'
 DIFFILE='f_gnldiff.txt'
 MAINB='main2'
 MAINP='mainp'
+EMPTY='tempty'
 
 # Unfonctional
-#ALL="test02.txt test03.txt test04.txt test05.txt test06 test06.txt test1 test2 test3 test4 test5 test6 test7 test8 test9 test10 test11 test12 test13 txt"
+
+rm -f ${EMPTY}
+touch ${EMPTY}
+ALL=("t4.txt" "t42.txt" "t4n.txt" "t8.txt" "t82.txt" "t8n.txt" "t16.txt" "t162.txt" "t16n.txt" "${EMPTY}" "t4e.txt" "t8e.txt" "t16e.txt")
 
 rm -f *_gnl
 clear
@@ -41,7 +46,7 @@ echo "${BLUE}\nH${GREEN}E${BROWN}L${RED}L${BLUE}O ${GREEN}:) ${BROWN}! ${RED}$(c
 echo "${BROWN}Want you change or look BUFF_SIZE ?"
 echo "      y: For yes"
 echo "(other): For no ${NC}"
-read include
+read -s -n 1 include
 if [ ${include} = y ]; then
 	vi $1/get_next_line.h
 fi
@@ -54,7 +59,7 @@ ls -R $1/*
 echo "${BROWN}\nSkip norme ?"
 echo "(other): For yes"
 echo "      n: For no ${NC}"
-read norme
+read -s -n 1 norme
 
 # CHECK NORME
 if [ ${norme} = n ]; then
@@ -97,9 +102,11 @@ then
 	make -C $1/libft/
 	gcc -Wall -Wextra -Werror -I $1/libft/includes/ -c $1/get_next_line.c
 	gcc -Wall -Wextra -Werror -I $1/libft/includes/ -I $1 -c ${MAIN}.c
+	gcc -Wall -Wextra -Werror -I $1/libft/includes/ -I $1 -c ${MAINA}.c
 	gcc -Wall -Wextra -Werror -I $1/libft/includes/ -I $1 -c ${MAINP}.c
 	gcc -o fail_gnl get_next_line.o ${MAINP}.o -L $1/libft/ -lft
 	gcc -o test_gnl get_next_line.o ${MAIN}.o -L $1/libft/ -lft
+	gcc -o testa_gnl get_next_line.o ${MAINA}.o -L $1/libft/ -lft
 	if [ $? = 0 ]
 	then
 		echo "${GREEN}VERY WELL :) You have use libft ! ${NC}"
@@ -108,12 +115,14 @@ then
 		exit
 	fi
 else
-	echo "${BLUE}\n\n/COMPIL WITHOUT LIBFT\\_____. ${NC}"
+	echo "${BLUE}\n/COMPIL WITHOUT LIBFT\\_____. ${NC}"
 	gcc -Wall -Wextra -Werror -c $1/get_next_line.c
 	gcc -Wall -Wextra -Werror -c ${MAIN}.c -I $1/libft/includes -I $1
+	gcc -Wall -Wextra -Werror -c ${MAINA}.c -I $1/libft/includes -I $1
 	gcc -Wall -Wextra -Werror -c ${MAINP}.c -I $1/libft/includes -I $1
 	gcc -o fail_gnl get_next_line.o ${MAINP}.o
 	gcc -o test_gnl get_next_line.o ${MAIN}.o
+	gcc -o testa_gnl get_next_line.o ${MAINA}.o
 	if [ $? = 1 ]
 	then
 		echo "${RED}NOT COMPIL X( Sorry your project does not compil ${NC}"
@@ -127,10 +136,15 @@ ${ENC}
 
 # CHECK FONCTION
 echo "${BLUE}/TEST FONCTION\\_____. ${NC}"
-echo "Ok, Enter file(s) now:"
-read files
 echo "${BLUE}_On parameters_____. ${NC}"
-./test_gnl ${files}
+i=0
+while [ $i -lt ${#ALL[*]} ]; do
+	echo "${BLUE}\n/${ALL[$i]}\\_____${NC}"
+	./test_gnl ${ALL[$i]}
+	echo "${BROWN}$(cat ${ALL[$i]})${NC}"
+	echo "${BLUE}\\_____.${NC}"
+	i=$(($i+1))
+done
 fonc=$?
 if [ ${fonc} = 1 ]; then
 	echo "${RED}Error :( Your fonction return bad number ${NC}"
@@ -144,10 +158,17 @@ fi
 ${EBROWN}
 echo "Continue for standard file ? yes: 'y' or no: (other)"
 ${ENC}
-read choice2
+read -s -n 1 choice2
 if [ ${choice2} = y ]; then
 	echo "${BLUE}_On stdin_____. ${NC}"
-	cat ${files} | ./test_gnl
+	i=0
+	while [ $i -lt ${#ALL[*]} ]; do
+		echo "${BLUE}\n/${ALL[$i]}\\_____${NC}"
+		cat ${ALL[$i]} | ./test_gnl
+		echo "${BROWN}$(cat ${ALL[$i]})${NC}"
+		echo "${BLUE}\\_____.${NC}"
+		i=$(($i+1))
+	done
 	fonc=$?
 	if [ ${fonc} = 1 ]; then
 		echo "${RED}Error :( Your fonction return bad number ${NC}"
@@ -159,47 +180,50 @@ if [ ${choice2} = y ]; then
 		echo "${RED}OH NO !!! X( Fonction exit ! ${NC}"
 	fi
 
-	${EBROWN}
-	read -p 'Next (Check difference of origin file)'
-	${ENC}
+	echo "${BROWN}\nCheck differences with function diff ?"
+	echo "      y: for yes"
+	echo "(other): for no${NC}"
+	read -s -n 1 choice
 fi
 
 # CHECK DIFF
-echo "${BLUE}/CHECK DIFFERENCE\\_____. ${NC}"
-if [ -d $1/libft ]; then
-	make -C $1/libft/ fclean
-	make -C $1/libft/
-	gcc -Wall -Wextra -Werror -I $1/libft/includes/ -c $1/get_next_line.c
-	gcc -Wall -Wextra -Werror -I $1/libft/includes/ -I $1 -c ${MAINS}.c
-	gcc -o speed_gnl get_next_line.o ${MAINS}.o -L $1/libft/ -lft
-else
-	gcc -Wall -Wextra -Werror -c $1/get_next_line.c
-	gcc -Wall -Wextra -Werror -c ${MAINS}.c -I $1/libft/includes -I $1
-	gcc -o speed_gnl get_next_line.o ${MAINS}.o
-fi
-echo "Write name file at compare"
-read file
-echo "I place: ${BROWN}${file} ${NC}in file: ${BROWN}${DIFFILE} ${NC}for compare... ${NC}"
-time ./speed_gnl ${file} > ${DIFFILE}
-${ERED}
-diff ${file} ${DIFFILE}
-vdiff=$?
-if [ ${vdiff} = 1 ]; then
-	echo "One or more line(s) not equal :(\n ${NC}"
-elif [ ${vdiff} = 0 ]; then
-	echo "${GREEN}Good :) ! Your programme return identical of origin file\n ${NC}"
-else
-	echo "ERROR: Are you sur to choice file ? :|\n ${NC}"
+if [ ${choice} = 'y' ]; then
+	echo "${BLUE}\n/CHECK DIFFERENCE\\_____. ${NC}"
+	if [ -d $1/libft ]; then
+		make -C $1/libft/ fclean
+		make -C $1/libft/
+		gcc -Wall -Wextra -Werror -I $1/libft/includes/ -c $1/get_next_line.c
+		gcc -Wall -Wextra -Werror -I $1/libft/includes/ -I $1 -c ${MAINS}.c
+		gcc -o speed_gnl get_next_line.o ${MAINS}.o -L $1/libft/ -lft
+	else
+		gcc -Wall -Wextra -Werror -c $1/get_next_line.c
+		gcc -Wall -Wextra -Werror -c ${MAINS}.c -I $1/libft/includes -I $1
+		gcc -o speed_gnl get_next_line.o ${MAINS}.o
+	fi
+	echo "Now, enter name of file at compare"
+	read file
+	echo "I place: ${BROWN}${file} ${NC}in file: ${BROWN}${DIFFILE} ${NC}for compare... ${NC}"
+	time ./speed_gnl ${file} > ${DIFFILE}
+	${ERED}
+	diff ${file} ${DIFFILE}
+	vdiff=$?
+	if [ ${vdiff} = 1 ]; then
+		echo "One or more line(s) not equal :( ${NC}"
+	elif [ ${vdiff} = 0 ]; then
+		echo "${GREEN}Good :) ! Your programme return identical of origin file ${NC}"
+	else
+		echo "ERROR: Are you sur to choice good file ? :| ${NC}"
+	fi
 fi
 
-echo "${BROWN}Have you done ${BLUE}B${GREEN}O${BROWN}N${RED}U${BLUE}S ${BROWN}?"
+echo "${BROWN}\nHave you done ${BLUE}B${GREEN}O${BROWN}N${RED}U${BLUE}S ${BROWN}?"
 echo "      y: For yes"
 echo "(other): For no ${NC}"
-read choice
+read -s -n 1 choice
 
 # CHECK BONUS
 if [ ${choice} = y ]; then
-	echo "${BLUE}/CHECK BONUS\\_____. ${NC}"
+	echo "${BLUE}\n/CHECK BONUS\\_____. ${NC}"
 	if [ -d $1/libft ]; then
 		make -C $1/libft/ fclean
 		make -C $1/libft/
@@ -211,7 +235,7 @@ if [ ${choice} = y ]; then
 		gcc -Wall -Wextra -Werror -c ${MAINB}.c -I $1/libft/includes -I $1
 		gcc -o bonus_gnl get_next_line.o ${MAINB}.o
 	fi
-	./bonus_gnl ${file} ${files}
+	./bonus_gnl ${ALL[@]}
 	fonc=$?
 	if [ ${fonc} = 1 ]; then
 		echo "${RED}Error :( Your fonction return bad number ${NC}"
@@ -235,6 +259,6 @@ view $1/get_next_line.c $1/get_next_line.h
 if [ -d $1/libft ]; then
 	view $1/libft/includes/libft.h
 	make -C $1/libft fclean
-	echo "libft content: ${BROWN}`ls -1 $1/libft/*.c | wc -l` ${NC}fonction(s)"
+	echo "libft content: ${BROWN}`ls -1 $1/libft/*.c | wc -l | tr -d' '` ${NC}function(s)"
 fi
 echo "${BLUE}END OF TEST, thanks and see you soon ;) ${NC}"
