@@ -19,12 +19,20 @@ une fois dans le Autosh choisi, vous pouvez:
 * o: Pour tester le projet
 * d: Pour supprimer certains fichier produit par l'Autosh ainsi qu'un `make fclean`
 * p: Pour modifier certaines options
+* q: Pour quitter le Autosh
 
 > Pour l'option *o* chaque Autosh ont leurs facon de l'utiliser, veuillez vous referer a l'Autosh que vous avez choisi pour en savoir plus dessus
 
 ###Pour tester ft_printf [*(autoft_printf)*][autoft_printf]
 Dans l'option *o* vous pouvez creer vos propres tests et les sauvegarder
 
+Contributions sur les Autosh
+----------------------------
+
+Creer un Autosh [*(autoref.sh)*][autoref]
+---------------
+
 *Incomplet*
 
 [autoft_printf]: https://github.com/clegrand/autosh "Lien vers le fichier autoft_printf.sh"
+[autoref]: https://github.com/clegrand/autosh "Lien vers le fichier Autosh de reference"
