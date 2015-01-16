@@ -23,19 +23,48 @@ une fois dans le Autosh choisi, vous pouvez:
 
 > Pour l'option *o* chaque Autosh ont leurs facon de l'utiliser, veuillez vous referer a l'Autosh que vous avez choisi pour en savoir plus dessus
 
-###Pour tester ft_printf [*(autoft_printf)*][autoft_printf]
+### Pour tester ft_printf [*(autoft_printf)*][autoft_printf]
 Dans l'option *o* vous pouvez creer vos propres tests et les sauvegarder  
+
+#### Utilisation de l'option *o*
+Pour creer un test et le sauvegarder suivez les instructions suivantes:
+
+1. `Do you want to create a test ? --- actual y: for yes` Appuyer sur *y*
+2. Ensuite vous aurez: `Enter argument for ft_printf or 'q' for quit and 'return' for execute:`  
+Vous pouvez ecrire votre test (ex: `"test %d: %10s -> %4d", 1, "Salut", 42`) puis appuyer sur entrer pour valider
+3. Vous pouvez relancer autant de test que vous desirez et pour quitter appuyer sur *q* puis entrer
+
+> Lors de la creation de test vous ne pourez pas mettre de *\n* mais il y en a automatiquement un qui s'ajoute a chaque fin de vos tests
+
+#### Ameliorations
+
+##### Disponible *(ajouter)*
+*Aucune amelioration pour le moment*
+
+##### Indisponible *(en cours ou prochainement)*
+* Chaque nouveau test creerons un nouveau dossier avec:  
+    * Un fichier.c pour le printf
+    * Un fichier.c pour le ft_printf
+    * Un fichier.txt pour la sortie du printf
+    * Un fichier.txt pour la sortie du ft_printf
+    * Un executable pour le printf
+    * Un executable pour le ft_printf
+    * Un fichier.txt de sortie de la fonction `diff fichier1 fichier 2`  
+Cela permetra les comparaisons automatiques des sorties standards
+* Triage des tests par types en dossier  
+vous pourez donc choisir dans quel dossier creer votre test, de le retrouver plus facilement et pouvoir faire les tests d'un type specifique uniquement  
+ex: *type_d/* Tout les tests pour le *%d*
+
+### Pour tester ft_ls [*(autoft_ls)*][autoft_ls]
 *Incomplet*
 
-###Pour tester ft_ls [*(autoft_ls)*][autoft_ls]
-*Incomplet*
-
-###Pour tester get_next_line [*(autoget_next_line)*][autoget_next_line]
+### Pour tester get_next_line [*(autoget_next_line)*][autoget_next_line]
 Ancien Autosh, ne dispose pas de git clone ni de menu  
 *Incomplet*
 
 Contributions sur les Autosh
 ----------------------------
+Les prochaines versions des Autosh serons plus apte pour ajouter du code par d'autre fichier et des fonctions  
 *Incomplet*
 
 Creer un Autosh [*(autoref.sh)*][autoref]
