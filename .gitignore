@@ -1,0 +1,4 @@
+#Ignore certains fichiers
+*.o
+#Ignore le contenu du dossier
+alpha/
