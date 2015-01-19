@@ -55,6 +55,11 @@ Cela permetra les comparaisons automatiques des sorties standards
 vous pourez donc choisir dans quel dossier creer votre test, de le retrouver plus facilement et pouvoir faire les tests d'un type specifique uniquement  
 ex: *type_d/* Tout les tests pour le *%d*
 
+### Pour tester fdf [*(autofdf)*][autofdf]
+L'option *o* vous permet de comparer et lancer automatiquement des maps de tests avec le fdf de demonstration  
+(pour passer au test suivant vous devez fermer le votre fdf)  
+*(ne pas oublier de fermer celui de demonstration avant au risque de compiler plusieurs fenetres)*
+
 ### Pour tester ft_ls [*(autoft_ls)*][autoft_ls]
 *Incomplet*
 
