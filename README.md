@@ -67,6 +67,15 @@ L'option *o* vous permet de comparer et lancer automatiquement des maps de tests
 Ancien Autosh, ne dispose pas de git clone ni de menu  
 *Incomplet*
 
+### Pour tester libft [*(autolibft2)*][autolibft]
+Le plus ancien, 1ere version *(comme en piscine)*  
+Ne check pas les 5 dernier bonus *(test uniquement `ft_lstnew`)*  
+
+#### Utilisation
+Pour l'utiliser entrer en argument le dossier du projet a tester:  
+`sh autolibft2.sh link_directory_of_project`
+*Incomplet*
+
 Contributions sur les Autosh
 ----------------------------
 Les prochaines versions des Autosh serons plus apte pour ajouter du code par d'autre fichier et des fonctions  
@@ -80,4 +89,5 @@ Creer un Autosh [*(autoref.sh)*][autoref]
 [autofdf]: https://github.com/clegrand/autosh/tree/master/t_fdf "Lien vers le fichier autofdf.sh"
 [autoft_ls]: https://github.com/clegrand/autosh/tree/master/t_ft_ls "Lien vers le fichier autoft_ls.sh"
 [autoget_next_line]: https://github.com/clegrand/autosh/tree/master/t_get_next_line "Lien vers le fichier autoget_next_line.sh"
+[autolibft]: https://github.com/clegrand/autosh/tree/master/t_libft "Lien vers le fichier autolibft2.sh"
 [autoref]: https://github.com/clegrand/autosh "Lien vers le fichier Autosh de reference"
