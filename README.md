@@ -73,7 +73,7 @@ Ne check pas les 5 dernier bonus *(test uniquement `ft_lstnew`)*
 
 #### Utilisation
 Pour l'utiliser entrer en argument le dossier du projet a tester:  
-`sh autolibft2.sh link_directory_of_project`
+`sh autolibft2.sh link_directory_of_project`  
 *Incomplet*
 
 Contributions sur les Autosh
