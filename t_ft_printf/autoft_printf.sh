@@ -6,7 +6,7 @@
 #    By: clegrand <clegrand@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2014/12/16 13:57:59 by clegrand          #+#    #+#              #
-#    Updated: 2015/01/09 15:27:42 by clegrand         ###   ########.fr        #
+#    Updated: 2015/01/22 16:47:38 by clegrand         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,7 @@ PURPLE='\033[1;34m'
 ENC='echo \033[0;37m'
 
 NAME='ft_printf'
-VER='(V3.62.M2)'
+VER='(V3.65.M2)'
 PATHO="c_${NAME}_"
 GIT="vogsphere@vogsphere.42.fr:intra/2014/activities/${NAME}/"
 
@@ -55,9 +55,11 @@ DLIB='libft'
 DLINC='includes'
 
 #other option
+VEREF=''
+AREA='2'
 LPRINTF='libftprintf.a'
 REFFILE="ref_base_${NAME}.c"
-TESTFILE="test_${NAME}2.c"
+TESTFILE="test_${NAME}${AREA}.c"
 EXEFILE="exe_${NAME}"
 EXESAVE="save_${NAME}.txt"
 AEXESAVE="all_${EXESAVE}"
@@ -140,10 +142,10 @@ while [ ${choice} != q ]; do
 				while [ -e $i${TESTFILE} ]; do
 					i=$(($i+1))
 				done
-				cp ${REFFILE} $i${TESTFILE}
+				cp ${VEREF}${REFFILE} $i${TESTFILE}
 				sed -i -e "s/${REF}/${tabarg[*]}/g" $i${TESTFILE}
 				rm -f $i${TESTFILE}-e
-				gcc $i${TESTFILE} -L${PROJ} -lftprintf -L${PROJ}/${DLIB} -lft -I ${PROJ}/${DINC} -I ${PROJ}/${DLIB}/${DLINC} -o ${EXEFILE}
+				gcc $i${TESTFILE} -L${PROJ} -lftprintf -I ${PROJ}/${DINC} -I ${PROJ}/${DLIB}/${DLINC} -o ${EXEFILE}
 				if [ $? = 1 ]; then
 					echo "${RED}[Error compil]> ${NC}Your compil of ${RED}${tabarg[*]} ${NC}failed :("
 					rm -f $i${TESTFILE}
@@ -156,13 +158,14 @@ while [ ${choice} != q ]; do
 			done
 			${ENC}
 		fi
+		make -C ${PROJ}
 		j=0
 		BEGTIME=`date +%s`
 		rm -f ${AEXESAVE}
 		touch ${AEXESAVE}
 		while [ -e $j${TESTFILE} ]; do
 			echo "${BLUE}/$j${EXEFILE}\\_____ ${NC}"
-			gcc $j${TESTFILE} -L${PROJ} -lftprintf -L${PROJ}/${DLIB} -lft -I ${PROJ}/${DINC} -I ${PROJ}/${DLIB}/${DLINC} -o $j${EXEFILE}
+			gcc $j${TESTFILE} -L${PROJ} -lftprintf -I ${PROJ}/${DINC} -I ${PROJ}/${DLIB}/${DLINC} -o $j${EXEFILE}
 			if [ $? = 1 ]; then
 				echo "${RED}[Error compil]> ${NC}Your compil of ${RED}$j${TESTFILE} ${NC}failed :("
 			else
@@ -179,7 +182,7 @@ while [ ${choice} != q ]; do
 			j=$(($j+1))
 		done
 		ENDTIME=`date +%s`
-		sh detect2.sh ${PROJ}/${LPRINTF} ${PROJ}/${DLIB}/libft.a > funcuse.txt
+		sh detect2.sh ${PROJ}/${LPRINTF} > funcuse.txt
 		if [ $(cat funcuse.txt | wc -l) != 0 ]; then
 			echo "${BROWN}$(cat funcuse.txt)\n[Use function]> ${NC}The ${BROWN}${LPRINTF} ${NC}use ${BROWN}$(cat funcuse.txt | wc -l | tr -d ' ') ${NC}unknow function"
 		fi
@@ -213,6 +216,14 @@ while [ ${choice} != q ]; do
 			read DSRC
 			echo "Select path of ${NAME} includes:"
 			read DINC
+		fi
+		echo "\nChange test of ${NAME} ? y: for yes"
+		read -s -n 1 path
+		if [ ${path} = y ]; then
+			echo "Select ver ref file of ${NAME}"
+			read VER
+			echo "Select area ref file of ${NAME}"
+			read AREA
 		fi
 		echo "\nChange path of libft ? y: for yes"
 		read -s -n 1 path
