@@ -13,26 +13,26 @@ Pour lancer un Autosh sur votre projet:
 
 une fois dans le Autosh choisi, vous pouvez:  
 
-* f: Pour voir les fichiers dans le dossier
-* n: Pour verifier la norme
-* m: Pour faire un `make re` du projet
-* o: Pour tester le projet
-* d: Pour supprimer certains fichiers produits par l'Autosh ainsi qu'un `make fclean`
-* p: Pour modifier certaines options
-* q: Pour quitter le Autosh
+* F: Pour voir les fichiers dans le dossier
+* N: Pour verifier la norme
+* M: Pour faire un `make re` du projet
+* U: Pour tester le projet (cette option se nomme *o* dans les precedentes version)
+* D: Pour supprimer certains fichiers produits par l'Autosh ainsi qu'un `make fclean`
+* P: Pour modifier certaines options
+* Q: Pour quitter le Autosh
 
-> Pour l'option *o* chaque Autosh ont leurs facon de l'utiliser, veuillez vous referer a l'Autosh que vous avez choisi pour en savoir plus dessus
+> Pour l'option *U* (*o*) chaque Autosh ont leurs facon de l'utiliser, veuillez vous referer a l'Autosh que vous avez choisi pour en savoir plus dessus
 
 ### Pour tester ft_printf [*(autoft_printf)*][autoft_printf]
-Dans l'option *o* vous pouvez creer vos propres tests et les sauvegarder  
+Dans l'option *U* vous pouvez creer vos propres tests et les sauvegarder  
 
-#### Utilisation de l'option *o*
+#### Utilisation de l'option *U*
 Pour creer un test et le sauvegarder suivez les instructions suivantes:
 
-1. `Do you want to create a test ? --- actual y: for yes` Appuyer sur *y*
+1. Une fois dans l'otpion le message: `Do you want to create a test ? --- actual y: for yes` s'affiche, appuyer sur *y*
 2. Ensuite vous aurez: `Enter argument for ft_printf or 'q' for quit and 'return' for execute:`  
-Vous pouvez ecrire votre test (ex: `"test %d: %10s -> %4d", 1, "Salut", 42`) puis appuyer sur entrer pour valider
-3. Vous pouvez relancer autant de test que vous desirez et pour quitter appuyer sur *q* puis entrer
+Vous pouvez ecrire votre test (ex: `"test %d: %10s -> %4d", 1, "Salut", 42`) puis appuyer sur *return* pour valider
+3. Vous pouvez relancer autant de test que vous desirez et pour quitter appuyer sur *q* puis*return*
 
 > Lors de la creation de test vous ne pourez pas mettre de *\n* mais il y en a automatiquement un qui s'ajoute a chaque fin de vos tests
 
@@ -69,12 +69,32 @@ Ancien Autosh, ne dispose pas de git clone ni de menu
 
 ### Pour tester libft [*(autolibft2)*][autolibft]
 Le plus ancien, 1ere version *(comme en piscine)*  
-Ne check pas les 5 dernier bonus *(test uniquement `ft_lstnew`)*  
+Ne check pas les 5 dernier bonus *(test uniquement `ft_lstnew` dans les bonus)*  
 
 #### Utilisation
 Pour l'utiliser entrer en argument le dossier du projet a tester:  
 `sh autolibft2.sh link_directory_of_project`  
-*Incomplet*
+Vous n'aurez plus qu'a suivre les instructions  
+A la fin du programme vous pouvez visualiser quelques fonction ainsi que le Makefile et les bonus  
+Une fois fini vous pouvez utiliser les main de test de l'Autosh commencant par `t_`:  
+`t_namefuntion arguments ...`
+
+> Si l'Autosh se termine bien, il nettoie les *.o* pour pouvoir naviguer plus facilement
+
+#### Partie 1
+La verification est manuel par comparaison par apport a la vrai fonction:  
+Vous pouvez directement reperer 2 lignes pour chaque test et verifier si elle son identique  
+`Libc: return_of_function` Retour de la fonction de base  
+`Out : return_of_function` Retour de la fonction a tester
+
+#### Partie 2
+La verification est manuel par deduction  
+Dans chaque test vous pouvez voir les parametres des tests pour les fonctions et son resultat  
+Verifier la reponse de la fonction
+
+#### Bonus
+La verification est automatique  
+Vous avez juste a verifier si tout est vert
 
 Contributions sur les Autosh
 ----------------------------
