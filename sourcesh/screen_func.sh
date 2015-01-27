@@ -6,7 +6,7 @@
 #    By: clegrand <clegrand@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/01/23 19:21:09 by clegrand          #+#    #+#              #
-#    Updated: 2015/01/23 20:59:45 by clegrand         ###   ########.fr        #
+#    Updated: 2015/01/27 20:24:25 by clegrand         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,6 +17,8 @@ DOWN='\033[B'
 
 LIN_DEF='80'
 COL_DEF='80'
+
+#source ../sourcesh/lib_base.sh
 
 function screen_lines
 {
@@ -87,5 +89,24 @@ function screen_delinecho
 #printf "$(screen_delinecho Hello World \!)"
 #sleep 2
 #printf "$(screen_delinecho "Bye :)")\n"
+
+function screen_center
+{
+	local merge
+	local -i char
+	size=$((($(screen_columns)/2)-(${#1}/2)))
+	if [[ -n $2 ]]; then
+		merge=("$2")
+	else
+		merge=(' ')
+	fi
+	printf "`lib_set "${merge:0:1}" ${size}`$1`lib_set "${merge:0:1}" $((${size}+$((($(screen_columns)%2)-1))))`\n"
+}
+
+# TESTS
+
+#printf "`screen_center "Salut tout le monde"`\n"
+#printf "`screen_center "Salut tout le monde" '|i||'`\n"
+#printf "`screen_center "{end of test}" "8"`\n"
 
 #exit 0

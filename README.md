@@ -32,7 +32,7 @@ Pour creer un test et le sauvegarder suivez les instructions suivantes:
 1. Une fois dans l'otpion le message: `Do you want to create a test ? --- actual y: for yes` s'affiche, appuyer sur *y*
 2. Ensuite vous aurez: `Enter argument for ft_printf or 'q' for quit and 'return' for execute:`  
 Vous pouvez ecrire votre test (ex: `"test %d: %10s -> %4d", 1, "Salut", 42`) puis appuyer sur *return* pour valider
-3. Vous pouvez relancer autant de test que vous desirez et pour quitter appuyer sur *q* puis*return*
+3. Vous pouvez relancer autant de test que vous desirez et pour quitter appuyer sur *q* puis *return*
 
 > Lors de la creation de test vous ne pourez pas mettre de *\n* mais il y en a automatiquement un qui s'ajoute a chaque fin de vos tests
 

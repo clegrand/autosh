@@ -6,7 +6,7 @@
 #    By: clegrand <clegrand@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/01/25 14:30:46 by clegrand          #+#    #+#              #
-#    Updated: 2015/01/25 18:56:33 by clegrand         ###   ########.fr        #
+#    Updated: 2015/01/27 19:56:41 by clegrand         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -44,10 +44,13 @@ TAB_COLOR=(${BLUE} ${GREEN} ${YELLOW} ${RED} ${PURPLE})
 TAB_COLOR2=(${BLUE} ${GREEN} ${YELLOW} ${RED} ${YELLOW} ${GREEN})
 TAB_COLOR3=(${WHITE} ${WHITE2} ${BLUE2} ${BLUE} ${BLUE3} ${GREEN} ${GREEN2} ${YELLOW2} ${YELLOW} ${RED} ${RED2} ${PURPLE} ${GRAY})
 TAB_COLOR4=(${BG_WHITE} ${BG_BLUE} ${BG_BLUE2} ${BG_BLUE3} ${BG_GREEN} ${BG_YELLOW} ${BG_RED} ${BG_RED2} ${BG_GRAY} ${BG_BLACK})
+TAB_COLOR5=(${WHITE} ${BG_WHITE})
 
 # OPTIONS
 BORDER='on' #on: Active border line
-ALE_DEF=15
+LEF_BOR_DEF=5 #Default size for left border
+ALE_DEF=15 #Default size for align
+COLOR_MENU=(${TAB_COLOR[*]}) #Defaut variant of color
 
 # . source_file.sh
 source ../sourcesh/screen_func.sh
@@ -56,36 +59,41 @@ source ../sourcesh/lib_base.sh
 # Create menu Meta version
 function meta_menu
 {
-	local -a tab_arg colors
+	local -a tab_arg
 	local -i i max
-	#select variant of color
-	colors=(${TAB_COLOR3[*]})
 	tab_arg=("$@")
 	i=0
 	max=0
 	while [[ $i -lt ${#tab_arg[*]} ]]; do
-		printf "${colors[$((($i%${#colors[*]})))]} ${tab_arg[$i]} ${NC}"
+		printf "${COLOR_MENU[$((($i%${#COLOR_MENU[*]})))]} ${tab_arg[$i]} ${NC}"
 		max=$((${max}+${#tab_arg[$i]}+2))
 		i=$((i+1))
 	done
 	if [[ $(($(screen_columns)-max)) -gt 0 ]] && [[ "${BORDER}" = "on" ]]; then
-		printf "${GRAY}.$(lib_set '_' $(($(screen_columns)-max-1)))${NC}"
+		printf "${GRAY}.$(lib_set '_' $(($(screen_columns)-max-1)))${NC}\n"
 	else
 		printf "\n"
 	fi
 	i=0
 	while [[ $i -lt ${#tab_arg[*]} ]]; do
-		printf "${colors[$((($i%${#colors[*]})))]}\\$(lib_set '_' ${#tab_arg[$i]})/${NC}"
+		printf "${COLOR_MENU[$((($i%${#COLOR_MENU[*]})))]}\\$(lib_set '_' ${#tab_arg[$i]})/${NC}"
 		i=$((i+1))
 	done
 	printf "\n"
 	return ${max}
 }
 
+# $1=message $2=left_border(optional)
 function meta_message
 {
-	if [[ ${#1} -le $(screen_columns) ]] && [[ "${BORDER}" = "on" ]]; then
-		printf "/$1\\$(lib_set '_' $(($(screen_columns)-${#1}-2)))"
+	local -i left_border
+	if [[ $2 -gt 0 ]]; then
+		left_border=$2
+	else
+		left_border=${LEF_BOR_DEF}
+	fi
+	if [[ "${BORDER}" = "on" ]]; then
+		printf "`lib_set '_' ${left_border}`/$1\\$(lib_set '_' $(($(screen_columns)-${#1}-2-${left_border})))"
 	else
 		printf "/$1\\\n"
 	fi
@@ -100,10 +108,17 @@ function meta_alert
 	if [[ $2 -gt 0 ]]; then
 		max=$2
 	else
-		max=$ALE_DEF
+		max=${#1}
 	fi
 	arg=$1
 	printf "[${arg:0:${max}}$(lib_set ' ' $((${max}-${#arg})))]>\n"
+	return 0
+}
+
+function meta_title
+{
+	printf "$(screen_center "/$1\\" '_')\n"
+	printf "$(screen_center "\\$(lib_set '_' ${#1})/")\n"
 	return 0
 }
 
@@ -115,12 +130,14 @@ function meta_alert
 #else
 #	printf "$(meta_menu 1-Hi 2-Hey 3-Install 4-Uninstall 5-Bye 6-Version "7-Other test")\n"
 #fi
+#printf "${WHITE2}$(meta_message "Fin d'affichage du menu" $#)${NC}\n"
 #printf "${WHITE2}$(meta_message "Fin d'affichage du menu")${NC}\n"
+#printf "${WHITE2}$(meta_title "Test d'un titre")${NC}"
 #i=0
 #arg=("$@")
 #while [[ $i -lt $(($#-1)) ]]; do
 #	color=${TAB_COLOR3[$(($i%${#TAB_COLOR3[*]}))]}
-#	printf "${color}$(meta_alert "${arg[$i]}")${NC} Super ${color}${arg[$i]}${NC} ever\n"
+#	printf "${color}$(meta_alert "${arg[$i]}" $#)${NC} Super ${color}${arg[$i]}${NC} ever\n"
 #	i=$((i+1))
 #done
 #echo "$(meta_alert ${arg[$i]}) Super commentary ever"
