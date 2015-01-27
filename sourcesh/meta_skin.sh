@@ -47,7 +47,7 @@ TAB_COLOR4=(${BG_WHITE} ${BG_BLUE} ${BG_BLUE2} ${BG_BLUE3} ${BG_GREEN} ${BG_YELL
 
 # OPTIONS
 BORDER='on' #on: Active border line
-SIZE_DEF=15
+ALE_DEF=15
 
 # . source_file.sh
 source ../sourcesh/screen_func.sh
@@ -59,35 +59,35 @@ function meta_menu
 	local -a tab_arg colors
 	local -i i max
 	#select variant of color
-	colors=(${TAB_COLOR[*]})
+	colors=(${TAB_COLOR3[*]})
 	tab_arg=("$@")
 	i=0
 	max=0
 	while [[ $i -lt ${#tab_arg[*]} ]]; do
-		echo "${colors[$((($i%${#colors[*]})))]} ${tab_arg[$i]} ${NC}\c"
+		printf "${colors[$((($i%${#colors[*]})))]} ${tab_arg[$i]} ${NC}"
 		max=$((${max}+${#tab_arg[$i]}+2))
 		i=$((i+1))
 	done
 	if [[ $(($(screen_columns)-max)) -gt 0 ]] && [[ "${BORDER}" = "on" ]]; then
-		echo "${GRAY}.$(lib_set '_' $(($(screen_columns)-max-1)))${NC}\c"
+		printf "${GRAY}.$(lib_set '_' $(($(screen_columns)-max-1)))${NC}"
 	else
-		echo "\\\n\c"
+		printf "\n"
 	fi
 	i=0
 	while [[ $i -lt ${#tab_arg[*]} ]]; do
-		echo "${colors[$((($i%${#colors[*]})))]}\\$(lib_set '_' ${#tab_arg[$i]})/${NC}\c"
+		printf "${colors[$((($i%${#colors[*]})))]}\\$(lib_set '_' ${#tab_arg[$i]})/${NC}"
 		i=$((i+1))
 	done
-	echo "\\\n\c"
+	printf "\n"
 	return ${max}
 }
 
 function meta_message
 {
 	if [[ ${#1} -le $(screen_columns) ]] && [[ "${BORDER}" = "on" ]]; then
-		echo "/$1\\$(lib_set '_' $(($(screen_columns)-${#1}-2)))"
+		printf "/$1\\$(lib_set '_' $(($(screen_columns)-${#1}-2)))"
 	else
-		echo "/$1\\"
+		printf "/$1\\\n"
 	fi
 	return 0
 }
@@ -100,29 +100,29 @@ function meta_alert
 	if [[ $2 -gt 0 ]]; then
 		max=$2
 	else
-		max=${SIZE_DEF}
+		max=$ALE_DEF
 	fi
 	arg=$1
-	echo "[${arg:0:${max}}$(lib_set ' ' $((${max}-${#arg})))]>"
+	printf "[${arg:0:${max}}$(lib_set ' ' $((${max}-${#arg})))]>\n"
 	return 0
 }
 
 # Test
 
-#echo "${WHITE2}Menu:${NC}"
+#printf "${WHITE2}Menu:${NC}\n"
 #if [[ $# -gt 0 ]]; then
-#	echo $(meta_menu "$@")
+#	printf "$(meta_menu "$@")\n"
 #else
-#	echo $(meta_menu 1-Hi 2-Hey 3-Install 4-Uninstall 5-Bye 6-Version "7-Other test")
+#	printf "$(meta_menu 1-Hi 2-Hey 3-Install 4-Uninstall 5-Bye 6-Version "7-Other test")\n"
 #fi
-#echo "${WHITE2}$(meta_message "Fin d'affichage du menu")${NC}"
+#printf "${WHITE2}$(meta_message "Fin d'affichage du menu")${NC}\n"
 #i=0
 #arg=("$@")
 #while [[ $i -lt $(($#-1)) ]]; do
 #	color=${TAB_COLOR3[$(($i%${#TAB_COLOR3[*]}))]}
-#	echo "${color}$(meta_alert "${arg[$i]}")${NC} Super ${color}${arg[$i]}${NC} ever"
+#	printf "${color}$(meta_alert "${arg[$i]}")${NC} Super ${color}${arg[$i]}${NC} ever\n"
 #	i=$((i+1))
 #done
-#echo "$(meta_alert ${arg[$i]} $((2*${SIZE_DEF}))) Super commentary ever"
+#echo "$(meta_alert ${arg[$i]}) Super commentary ever"
 
 #exit 0

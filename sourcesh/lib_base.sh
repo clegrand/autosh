@@ -16,8 +16,19 @@ function lib_set
 	local -i i
 	i=0
 	while [[ $i -lt $2 ]]; do
-		echo "$1\c"
+		printf "$1"
 		i=$((i+1))
 	done
 	return 0
 }
+
+# Test
+
+#if [[ $# -lt 2 ]]; then
+#	printf "Please enter arguments\n"
+#else
+#	printf "I enter \"%s\" and \'%d\' for lib_set\n" $1 $2
+#	printf "Result is:\n%s\n" `lib_set $1 $2`
+#fi
+
+#exit 0

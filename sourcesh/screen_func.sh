@@ -15,21 +15,32 @@ LEFT='\033[D'
 RIGHT='\033[C'
 DOWN='\033[B'
 
+LIN_DEF='80'
+COL_DEF='80'
+
 function screen_lines
 {
-	echo $(resize | grep "^LINES=" | cut -d '=' -f 2 | cut -d ';' -f 1)
-	if [[ $? != 0 ]]; then
+	local -i lines
+	lines=`tput lines`
+#	echo $(resize | grep "^LINES=" | cut -d '=' -f 2 | cut -d ';' -f 1)
+	if [[ $lines -eq 0 ]]; then
+		echo $LIN_DEF
 		return 1
 	fi
+	echo $lines
 	return 0
 }
 
 function screen_columns
 {
-	echo $(resize | grep "^COLUMNS=" | cut -d '=' -f 2 | cut -d ';' -f 1)
-	if [[ $? != 0 ]]; then
+	local -i columns
+	columns=`tput cols`
+#	echo $(resize | grep "^COLUMNS=" | cut -d '=' -f 2 | cut -d ';' -f 1)
+	if [[ ${columns} -eq 0 ]]; then
+		echo "${COL_DEF}"
 		return 1
 	fi
+	echo ${columns}
 	return 0
 }
 
@@ -37,7 +48,6 @@ function screen_columns
 
 #lines=$(screen_lines)
 #columns=$(screen_columns)
-#
 #echo "lines=${lines} columns=${columns}"
 
 function screen_delturn
@@ -45,37 +55,37 @@ function screen_delturn
 	local -i i
 	i=0
 	while [[ $i -lt $1 ]]; do
-		echo "${LEFT} ${LEFT}\c"
+		printf "${LEFT} ${LEFT}"
 		i=$((i+1))
 	done
 }
 
 function screen_deline
 {
-	echo $(screen_delturn $(screen_lines))
+	printf "$(screen_delturn $(screen_lines))"
 	return 0
 }
 
 function screen_delinecho
 {
-	echo "$(screen_deline)\c"
-	echo "$*\c"
+	printf "$(screen_deline)"
+	printf "$*"
 	return 0
 }
 
 # TESTS
 
-#echo "Hey !!!\c"
+#printf "Hey !!!"
 #sleep 3
-#echo "$(screen_delturn 3)\c"
-#echo "???\c"
+#printf "$(screen_delturn 3)"
+#printf "???"
 #sleep 1
-#echo "$(screen_deline)"
+#printf "$(screen_deline)\n"
 #sleep 1
-#echo "Bonjour\c"
+#printf "Bonjour"
 #sleep 3
-#echo "$(screen_delinecho Hello World \!)\c"
+#printf "$(screen_delinecho Hello World \!)"
 #sleep 2
-#echo "$(screen_delinecho "Bye :)")"
+#printf "$(screen_delinecho "Bye :)")\n"
 
 #exit 0
