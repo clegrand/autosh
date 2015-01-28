@@ -6,7 +6,7 @@
 #    By: clegrand <clegrand@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2014/12/16 13:57:59 by clegrand          #+#    #+#              #
-#    Updated: 2015/01/28 18:59:29 by clegrand         ###   ########.fr        #
+#    Updated: 2015/01/28 21:13:45 by clegrand         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,12 +21,26 @@ EBROWN='echo \033[0;33m'
 ENC='echo \033[0;37m'
 
 NAME='ft_printf'
-VER='(V3.68.M2)'
+VER='(V3.70.M2)'
 BY='By clegrand'
 PATHO="c_${NAME}_"
 GIT="vogsphere@vogsphere.42.fr:intra/2014/activities/${NAME}/"
 
 tput civis
+
+git pull > lastmaj.txt 2> lastmaj.txt &
+pid_norme=$!
+i=0
+kill -0 ${pid_norme}
+printf "${BROWN}I check if new version is available of ${PURPLE}${NAME}${BROWN} ${NC}"
+while [[ $? = 0 ]]; do
+	printf "${TAB_COLOR3[$(($i%${#TAB_COLOR3[*]}))]}$(time_wait $i)${NC}"
+	sleep 0.2
+	i=$((i+1))
+	kill -0 ${pid_norme} 2> /dev/null
+done
+printf "$(screen_delturn 5)${GREEN}Ok !${NC}\n"
+
 if [ -e ../${PATHO}$1 ]; then
 	clear
 	printf "${GREEN}$1 exist ! ${NC}\n"
@@ -77,6 +91,7 @@ AEXESAVE="all_${EXESAVE}"
 FILE_NORME="norme_${NAME}.txt"
 REF="\"error\""
 PRINTFH='ft_printf.h'
+MODETEST='Normal'
 
 if [ -e .t_auto${NAME}.sh ]; then
 	printf "${RED}You are crash auto${NAME}.sh in the last exe ${NC}\n"
@@ -97,12 +112,12 @@ echo
 while [ ${choice} != q ]; do
 	if [ ${choice} = f ]; then # IF FILES
 		clear
-		printf "${TAB_COLOR[0]}$(meta_title ${MENU[0]})${NC}"
+		printf "${TAB_COLOR[0]}$(meta_title ${MENU[0]})${NC}\n"
 		# THEN FILES
 		ls -R ${PROJ}/*
 	elif [ ${choice} = n ]; then # IF NORME
 		clear
-		echo "${TAB_COLOR[1]}$(meta_title ${MENU[1]})${RED}"
+		printf "${TAB_COLOR[1]}$(meta_title ${MENU[1]})${RED}\n"
 		# THEN NORME
 		norminette ${PROJ}/. | grep -v "^Norme: " | grep -v ": Norminette can't check this file.$" > FileTestNorme &
 		pid_norme=$!
@@ -153,6 +168,10 @@ while [ ${choice} != q ]; do
 		maxtest=$(ls -1 | grep ${TESTFILE} | wc -l | tr -d ' ')
 		printf "${BLUE}Do you want to create a test ? ${PURPLE}${maxtest}${BLUE} actual ${NC}y: for yes\n"
 		read -s -n 1 choice
+		make -C ${PROJ}
+		inclibh=$(find ${PROJ} -name ${LIBH})
+		incprintfh=$(find ${PROJ} -name ${PRINTFH})
+		libprintfa=$(find ${PROJ} -name libftprintf.a)
 		if [ ${choice} = y ]; then
 			printf "${BLUE}Enter argument for ${NAME} or 'q' for quit and 'return' for execute: ${PURPLE}\n"
 			tput cnorm
@@ -166,7 +185,7 @@ while [ ${choice} != q ]; do
 				cp ${VEREF}${REFFILE} $i${TESTFILE}
 				sed -i -e "s/${REF}/${tabarg[*]}/g" $i${TESTFILE}
 				rm -f $i${TESTFILE}-e
-			gcc $j${TESTFILE} -L${libprintfa%libftprintf.a} -lftprintf -I ${inclibh%${LIBH}} -I ${incprintfh%${PRINTFH}} -o $j${EXEFILE}
+				gcc $j${TESTFILE} -L ${libprintfa%libftprintf.a} -lftprintf -I ${inclibh%${LIBH}} -I ${incprintfh%${PRINTFH}} -o $j${EXEFILE}
 				if [ $? = 1 ]; then
 					printf "${RED}$(meta_alert "Error compil" ${FUNCT_SIZE})${NC} Your compil of ${RED}${tabarg[*]} ${NC}failed :(\n"
 					rm -f $i${TESTFILE}
@@ -180,14 +199,10 @@ while [ ${choice} != q ]; do
 			tput civis
 			${ENC}
 		fi
-		make -C ${PROJ}
 		j=0
 		BEGTIME=`date +%s`
 		rm -f ${AEXESAVE}
 		touch ${AEXESAVE}
-		inclibh=$(find ${PROJ} -name ${LIBH})
-		incprintfh=$(find ${PROJ} -name ${PRINTFH})
-		libprintfa=$(find ${PROJ} -name libftprintf.a)
 		maxtest=$(ls -1 | grep ${TESTFILE} | wc -l | tr -d ' ')
 		grepmax=${maxtest}
 		while [ -e $j${TESTFILE} ]; do
@@ -232,6 +247,18 @@ while [ ${choice} != q ]; do
 	elif [ ${choice} = p ]; then # OPTION
 		clear
 		printf "$(meta_message "OPTION ${VER}")\n"
+		git pull > lastmaj.txt 2> lastmaj.txt &
+		pid_norme=$!
+		i=0
+		kill -0 ${pid_norme}
+		printf "I check if new version is available of ${PURPLE}${NAME}${NC} "
+		while [[ $? = 0 ]]; do
+			printf "$(time_wait $i)"
+			sleep 0.2
+			i=$((i+1))
+			kill -0 ${pid_norme} 2> /dev/null
+		done
+		printf "$(screen_delturn 5)(Ok!)\n"
 		printf "\nChange name of header for ${NAME} ? Actual ${PURPLE}${PRINTFH}${NC} y: for yes\n"
 		read -s -n 1 path
 		if [ ${path} = y ]; then
@@ -256,7 +283,37 @@ while [ ${choice} != q ]; do
 			read PROJ
 			tput civis
 		fi
+		printf "\nChange mode of test ? Actual ${PURPLE}${MODETEST}${NC} y: for yes\n"
+		read -s -n 1 path
+		if [[ ${path} = y ]]; then
+			BORDER='off'
+			COLOR_MENU=(${WHITE})
+			printf "$(meta_menu "1-Normal" "2-Only printf")\n"
+			printf "${YELLOW}$(meta_alert "Warning") Only printf not save test${NC}\n"
+			read -s -n 1 MODETEST
+			while [[ ${MODETEST} -lt 1 ]] || [[ ${MODETEST} -gt 2 ]]; do
+				printf "Select option:\n$(meta_menu "1-Normal" "2-Only printf")\n"
+				read -s -n 1 MODETEST
+			done
+			if [[ ${MODETEST} -eq 1 ]]; then
+				MODETEST='Normal'
+			elif [[ ${MODETEST} -eq 2 ]]; then
+				MODETEST='Only printf'
+			fi
+			BORDER='on'
+			COLOR_MENU=(${TAB_COLOR[*]})
+		fi
 		clear
+	elif [[ ${choice} = j ]]; then
+		if [[ .t_auto${NAME}.sh -ot auto${NAME}.sh ]]; then
+			rm -f .t_auto${NAME}.sh
+			bash auto${NAME}.sh ${PROJ}
+			exit 0
+		else
+			clear
+			printf "${BG_YELLOW}$(meta_title "relaunch mode")${NC}\n"
+			printf "${GREEN}$(meta_alert "No relaunch") Is up to date :)${NC}\n"
+		fi
 	else
 		clear
 		printf "${GRAY}$(lib_set '_' $(screen_columns))${NC}"
@@ -265,7 +322,7 @@ while [ ${choice} != q ]; do
 	if [ .t_auto${NAME}.sh -ot auto${NAME}.sh ] || [ -f ${PROJ}/${LPRINTF} ] || [ -f ${PROJ}/libft/libft.a ]; then
 		printf "\n$(meta_message "MESSAGE")\n"
 		if [ .t_auto${NAME}.sh -ot auto${NAME}.sh ]; then
-			printf "${BROWN}$(meta_alert "MAJ Available !")${NC} Choice 'q' and relanch auto${NAME} for quit version ${BROWN}$(grep "V" .t_auto${NAME}.sh | cut -d"(" -f2 | cut -d")" -f1) ${NC}and use version ${BROWN}$(grep "VER='" auto${NAME}.sh | sed -n 1p | cut -d"(" -f2 | cut -d")" -f1) ${NC}\n"
+			printf "${BROWN}$(meta_alert "MAJ Available !")${NC} Choice 'q' and relanch or 'j' auto${NAME} for quit version ${BROWN}$(grep "V" .t_auto${NAME}.sh | cut -d"(" -f2 | cut -d")" -f1) ${NC}and use version ${BROWN}$(grep "VER='" auto${NAME}.sh | sed -n 1p | cut -d"(" -f2 | cut -d")" -f1) ${NC}\n"
 		fi
 		if [ -f ${PROJ}/${LPRINTF} ]; then
 			printf "${GREEN}$(meta_alert "OPEN lib")${NC} The lib ${GREEN}${LPRINTF} ${NC}exist in ${GREEN}${PROJ} ${NC}\n"
