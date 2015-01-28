@@ -6,7 +6,7 @@
 #    By: clegrand <clegrand@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2014/12/16 13:57:59 by clegrand          #+#    #+#              #
-#    Updated: 2015/01/27 21:51:37 by clegrand         ###   ########.fr        #
+#    Updated: 2015/01/28 15:52:32 by clegrand         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -63,6 +63,7 @@ DSRC='*'
 DINC='inc'
 DLIB='libft'
 DLINC='includes'
+LIBH='libft.h'
 
 #other option
 VEREF=''
@@ -75,6 +76,7 @@ EXESAVE="save_${NAME}.txt"
 AEXESAVE="all_${EXESAVE}"
 FILE_NORME="norme_${NAME}.txt"
 REF="\"error\""
+PRINTFH='ft_printf.h'
 
 if [ -e .t_auto${NAME}.sh ]; then
 	printf "${RED}You are crash auto${NAME}.sh in the last exe ${NC}\n"
@@ -150,6 +152,9 @@ while [ ${choice} != q ]; do
 		# THEN FUNCT
 		printf "${BLUE}Do you want to create a test ? ${PURPLE}$(ls -1 | grep ${TESTFILE} | wc -l | tr -d ' ') ${BLUE}actual ${NC}y: for yes\n"
 		read -s -n 1 choice
+		inclibh=$(find ${PROJ} -name ${LIBH})
+		incprintfh=$(find ${PROJ} -name ${PRINTFH})
+		libprintfa=$(find ${PROJ} -name libftprintf.a)
 		if [ ${choice} = y ]; then
 			printf "${BLUE}Enter argument for ${NAME} or 'q' for quit and 'return' for execute: ${PURPLE}\n"
 			tput cnorm
@@ -163,7 +168,7 @@ while [ ${choice} != q ]; do
 				cp ${VEREF}${REFFILE} $i${TESTFILE}
 				sed -i -e "s/${REF}/${tabarg[*]}/g" $i${TESTFILE}
 				rm -f $i${TESTFILE}-e
-				gcc $i${TESTFILE} -L${PROJ} -lftprintf -I ${PROJ}/${DINC} -I ${PROJ}/${DLIB}/${DLINC} -o ${EXEFILE}
+			gcc $j${TESTFILE} -L${libprintfa%libftprintf.a} -lftprintf -I ${inclibh%${LIBH}} -I ${incprintfh%${PRINTFH}} -o $j${EXEFILE}
 				if [ $? = 1 ]; then
 					printf "${RED}$(meta_alert "Error compil" ${FUNCT_SIZE})${NC} Your compil of ${RED}${tabarg[*]} ${NC}failed :(\n"
 					rm -f $i${TESTFILE}
@@ -184,7 +189,7 @@ while [ ${choice} != q ]; do
 		touch ${AEXESAVE}
 		while [ -e $j${TESTFILE} ]; do
 			printf "${BLUE}$(meta_message "$j${EXEFILE}")${NC}\n"
-			gcc $j${TESTFILE} -L${PROJ} -lftprintf -I ${PROJ}/${DINC} -I ${PROJ}/${DLIB}/${DLINC} -o $j${EXEFILE}
+			gcc $j${TESTFILE} -L${libprintfa%libftprintf.a} -lftprintf -I ${inclibh%${LIBH}} -I ${incprintfh%${PRINTFH}} -o $j${EXEFILE}
 			if [ $? = 1 ]; then
 				printf "${RED}$(meta_alert "Error compil" ${FUNCT_SIZE})${NC} Your compil of ${RED}$j${TESTFILE} ${NC}failed :(\n"
 			else
@@ -227,35 +232,29 @@ while [ ${choice} != q ]; do
 	elif [ ${choice} = p ]; then # OPTION
 		clear
 		printf "$(meta_message "OPTION ${VER}")\n"
-		printf "\nChange path of ${NAME} ? y: for yes\n"
+		printf "\nChange name of header for ${NAME} ? Actual ${PURPLE}${PRINTFH}${NC} y: for yes\n"
 		read -s -n 1 path
 		if [ ${path} = y ]; then
-			printf "Select path of ${NAME} source:\n"
-			read DSRC
-			printf "Select path of ${NAME} includes:\n"
-			read DINC
+			printf "Select new name of header file of ${NAME}:\n"
+			tput cnorm
+			read PRINTFH
+			tput civis
 		fi
-		printf "\nChange test of ${NAME} ? y: for yes\n"
+		printf "\nChange name of header for your lib ? Actual ${PURPLE}${LIBH}${NC} y: for yes\n"
 		read -s -n 1 path
 		if [ ${path} = y ]; then
-			printf "Select ver ref file of ${NAME}\n"
-			read VER
-			printf "Select area ref file of ${NAME}\n"
-			read AREA
+			printf "Select new name of header file of your lib:\n"
+			tput cnorm
+			read LIBH
+			tput civis
 		fi
-		printf "\nChange path of libft ? y: for yes\n"
-		read -s -n 1 path
-		if [ ${path} = y ];then
-			printf "Select path of libft source:\n"
-			read DSRCLIB
-			printf "Select path of libft includes:\n"
-			read DINCLIB
-		fi
-		printf "\nChange path of project ? y: for yes\n"
+		printf "\nChange path of project ? Actual ${PURPLE}${PROJ}${NC} y: for yes\n"
 		read -s -n 1 path
 		if [ ${path} = y ]; then
 			printf "Select path of project:\n"
+			tput cnorm
 			read PROJ
+			tput civis
 		fi
 		clear
 	else

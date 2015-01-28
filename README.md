@@ -39,7 +39,9 @@ Vous pouvez ecrire votre test (ex: `"test %d: %10s -> %4d", 1, "Salut", 42`) pui
 #### Ameliorations
 
 ##### Disponible *(ajouter)*
-*Aucune amelioration pour le moment*
+* Recherche automatiquement les header (plus besoins d'aller dans les parametres (*P*) pour modifier leur dossier)  
+(par defaut recherche le dossier ou ce trouve *ft_printf.h* et *libft.h*)
+* Petite animation d'attente lors du test de la norme (*N*)
 
 ##### Indisponible *(en cours ou prochainement)*
 * Chaque nouveau test creerons un nouveau dossier avec:  
@@ -54,6 +56,7 @@ Cela permetra les comparaisons automatiques des sorties standards
 * Triage des tests par types en dossier  
 vous pourez donc choisir dans quel dossier creer votre test, de le retrouver plus facilement et pouvoir faire les tests d'un type specifique uniquement  
 ex: *type_d/* Tout les tests pour le *%d*
+* Jauge de reussite et d'echec des tests
 
 ### Pour tester fdf [*(autofdf)*][autofdf]
 L'option *o* vous permet de comparer et lancer automatiquement des maps de tests avec le fdf de demonstration  
