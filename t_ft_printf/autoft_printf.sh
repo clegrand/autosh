@@ -6,7 +6,7 @@
 #    By: clegrand <clegrand@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2014/12/16 13:57:59 by clegrand          #+#    #+#              #
-#    Updated: 2015/01/28 15:52:32 by clegrand         ###   ########.fr        #
+#    Updated: 2015/01/28 18:59:29 by clegrand         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -150,11 +150,9 @@ while [ ${choice} != q ]; do
 		clear
 		printf "${TAB_COLOR[3]}$(meta_title ${MENU[3]})${NC}\n"
 		# THEN FUNCT
-		printf "${BLUE}Do you want to create a test ? ${PURPLE}$(ls -1 | grep ${TESTFILE} | wc -l | tr -d ' ') ${BLUE}actual ${NC}y: for yes\n"
+		maxtest=$(ls -1 | grep ${TESTFILE} | wc -l | tr -d ' ')
+		printf "${BLUE}Do you want to create a test ? ${PURPLE}${maxtest}${BLUE} actual ${NC}y: for yes\n"
 		read -s -n 1 choice
-		inclibh=$(find ${PROJ} -name ${LIBH})
-		incprintfh=$(find ${PROJ} -name ${PRINTFH})
-		libprintfa=$(find ${PROJ} -name libftprintf.a)
 		if [ ${choice} = y ]; then
 			printf "${BLUE}Enter argument for ${NAME} or 'q' for quit and 'return' for execute: ${PURPLE}\n"
 			tput cnorm
@@ -187,6 +185,11 @@ while [ ${choice} != q ]; do
 		BEGTIME=`date +%s`
 		rm -f ${AEXESAVE}
 		touch ${AEXESAVE}
+		inclibh=$(find ${PROJ} -name ${LIBH})
+		incprintfh=$(find ${PROJ} -name ${PRINTFH})
+		libprintfa=$(find ${PROJ} -name libftprintf.a)
+		maxtest=$(ls -1 | grep ${TESTFILE} | wc -l | tr -d ' ')
+		grepmax=${maxtest}
 		while [ -e $j${TESTFILE} ]; do
 			printf "${BLUE}$(meta_message "$j${EXEFILE}")${NC}\n"
 			gcc $j${TESTFILE} -L${libprintfa%libftprintf.a} -lftprintf -I ${inclibh%${LIBH}} -I ${incprintfh%${PRINTFH}} -o $j${EXEFILE}
@@ -195,9 +198,8 @@ while [ ${choice} != q ]; do
 			else
 				printf "${PURPLE}%s${NC}\n" "$(grep "#define FT_ARG" $j${TESTFILE} | cut -c15-100)"
 				./$j${EXEFILE}
-				#./$j${EXEFILE} > ${EXESAVE}
-				#cat ${EXESAVE}
-				#cat ${EXESAVE} >> ${AEXESAVE}
+				./$j${EXEFILE} | grep "0\;32m" > ${EXESAVE}
+				grepmax=$((${grepmax}-$(echo $?)))
 				if [ $? != 0 ]; then
 					printf "${RED}$(meta_alert "Funct abort" ${FUNCT_SIZE})${NC} Programme ${RED}$j${TESTFILE} ${NC}abort\n"
 				fi
@@ -211,13 +213,11 @@ while [ ${choice} != q ]; do
 			printf "${BROWN}$(cat funcuse.txt)\n$(meta_alert "Use function" ${FUNCT_SIZE})${NC} The ${BROWN}${LPRINTF} ${NC}use ${BROWN}$(cat funcuse.txt | wc -l | tr -d ' ') ${NC}unknow function\n"
 		fi
 		printf "${BROWN}$(meta_alert "Time execute" ${FUNCT_SIZE})${NC} Time: ${BROWN}$(((ENDTIME-BEGTIME)/60)):$(((ENDTIME-BEGTIME)%60)) ${NC}for this test\n"
-		#MAX=$(ls -1 ?*${TESTFILE} | wc -l | tr -d ' ')
-		#TEST=$(cat -e ${AEXESAVE} | grep "return of ft_printf and printf are identic" | wc -l | tr -d ' ')
-		#if [ ${TEST} -gt $((${MAX}*(2/3))) ]; then
-		#	echo "${GREEN}[Test return ]> ${NC}You are validate ${GREEN}${TEST}/${MAX} ${NC}return test"
-		#else
-		#	echo "${RED}[Test return ]> ${NC}You are validate ${RED}${TEST}/${MAX} ${NC}return test"
-		#fi
+		if [[ $(((${maxtest}/3)*2)) -lt ${grepmax} ]]; then
+			printf "${GREEN}$(meta_alert "Good result" ${FUNCT_SIZE})${NC} Result is ${GREEN}${grepmax}/${maxtest}${NC}, is good :)\n"
+		else
+			printf "${RED}$(meta_alert "Bad result" ${FUNCT_SIZE})${NC} Result is ${RED}${grepmax}/${maxtest}, is bad :(\n"
+		fi
 	elif [ ${choice} = d ]; then # IF DELET
 		clear
 		printf "${TAB_COLOR[4]}$(meta_title ${MENU[4]})${NC}\n"
