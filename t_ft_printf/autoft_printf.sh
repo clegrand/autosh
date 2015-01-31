@@ -21,7 +21,7 @@ EBROWN='echo \033[0;33m'
 ENC='echo \033[0;37m'
 
 NAME='ft_printf'
-VER='(V3.70.M2)'
+VER='(V3.71.M2)'
 BY='By clegrand'
 PATHO="c_${NAME}_"
 GIT="vogsphere@vogsphere.42.fr:intra/2014/activities/${NAME}/"
@@ -39,7 +39,7 @@ while [[ $? = 0 ]]; do
 	i=$((i+1))
 	kill -0 ${pid_norme} 2> /dev/null
 done
-printf "$(screen_delturn 5)${GREEN}Ok !${NC}\n"
+printf "$(screen_delturn 5)${GREEN}(Ok!)${NC}\n"
 
 if [ -e ../${PATHO}$1 ]; then
 	clear
@@ -155,7 +155,7 @@ while [ ${choice} != q ]; do
 		if [ $? = 1 ] || [ $check -le 1 ]; then
 			printf "${RED}$(meta_alert "Error flag" ${MAKE_SIZE})${NC} Flag ${RED}-Wall ${NC}or ${RED}-Wextra ${NC}or ${RED}-Werror ${NC}not exist, check this:\n${RED}$(cat line.txt) ${NC}\nIn Makefile\n"
 		fi
-		Make -C ${PROJ} re
+		make -C ${PROJ} re
 		if [ $? = 0 ]; then
 			printf "${GREEN}$(meta_alert "Make ok !" ${MAKE_SIZE})${NC} Make re of ${GREEN}${NAME}${NC} OK :)\n"
 		else
@@ -178,14 +178,14 @@ while [ ${choice} != q ]; do
 			read -a tabarg
 			i=0
 			while [ "${tabarg[0]}" != 'q' ]; do
-				${ENC}
+				printf "${NC}\n"
 				while [ -e $i${TESTFILE} ]; do
 					i=$(($i+1))
 				done
 				cp ${VEREF}${REFFILE} $i${TESTFILE}
 				sed -i -e "s/${REF}/${tabarg[*]}/g" $i${TESTFILE}
 				rm -f $i${TESTFILE}-e
-				gcc $j${TESTFILE} -L ${libprintfa%libftprintf.a} -lftprintf -I ${inclibh%${LIBH}} -I ${incprintfh%${PRINTFH}} -o $j${EXEFILE}
+				gcc $i${TESTFILE} -L ${libprintfa%libftprintf.a} -lftprintf -I ${inclibh%${LIBH}} -I ${incprintfh%${PRINTFH}} -o ${EXEFILE}
 				if [ $? = 1 ]; then
 					printf "${RED}$(meta_alert "Error compil" ${FUNCT_SIZE})${NC} Your compil of ${RED}${tabarg[*]} ${NC}failed :(\n"
 					rm -f $i${TESTFILE}
@@ -197,7 +197,7 @@ while [ ${choice} != q ]; do
 				read -a tabarg
 			done
 			tput civis
-			${ENC}
+			printf "${NC}\n"
 		fi
 		j=0
 		BEGTIME=`date +%s`
@@ -229,15 +229,16 @@ while [ ${choice} != q ]; do
 		fi
 		printf "${BROWN}$(meta_alert "Time execute" ${FUNCT_SIZE})${NC} Time: ${BROWN}$(((ENDTIME-BEGTIME)/60)):$(((ENDTIME-BEGTIME)%60)) ${NC}for this test\n"
 		if [[ $(((${maxtest}/3)*2)) -lt ${grepmax} ]]; then
-			printf "${GREEN}$(meta_alert "Good result" ${FUNCT_SIZE})${NC} Result is ${GREEN}${grepmax}/${maxtest}${NC}, is good :)\n"
+			printf "${GREEN}$(meta_alert "Good result" ${FUNCT_SIZE})${NC} Result is ${GREEN}${grepmax}/${maxtest}${NC}, is good :)${NC}\n"
 		else
-			printf "${RED}$(meta_alert "Bad result" ${FUNCT_SIZE})${NC} Result is ${RED}${grepmax}/${maxtest}, is bad :(\n"
+			printf "${RED}$(meta_alert "Bad result" ${FUNCT_SIZE})${NC} Result is ${RED}${grepmax}/${maxtest}, is bad :(${NC}\n"
 		fi
+		printf "$(time_result ${grepmax} ${maxtest})\n"
 	elif [ ${choice} = d ]; then # IF DELET
 		clear
 		printf "${TAB_COLOR[4]}$(meta_title ${MENU[4]})${NC}\n"
 		# THEN DELET
-		Make -C ${PROJ} fclean
+		make -C ${PROJ} fclean
 		if [ $? = 0 ]; then
 			printf "${GREEN}$(meta_alert "Make fclean" ${DELET_SIZE})${NC} Make fclean of ${GREEN}${NAME}${NC} OK :)\n"
 		else
