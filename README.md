@@ -25,6 +25,12 @@ une fois dans le Autosh choisi, vous pouvez:
 
 ### Pour tester ft_printf [*(autoft_printf)*][autoft_printf]
 Dans l'option *U* vous pouvez creer vos propres tests et les sauvegarder  
+Dans les parametres *P* vous pouvez (en plus des options de base):
+
+* Modifier les headers a chercher pour la recherche automatique
+* Modifier le mode de creation de test:
+	* `Normal`: Creer des test et les sauvegardes
+	* `Only printf`: Test uniquement le printf de base
 
 #### Utilisation de l'option *U*
 Pour creer un test et le sauvegarder suivez les instructions suivantes:
@@ -42,6 +48,8 @@ Vous pouvez ecrire votre test (ex: `"test %d: %10s -> %4d", 1, "Salut", 42`) pui
 * Recherche automatiquement les header (plus besoins d'aller dans les parametres (*P*) pour modifier leur dossier)  
 (par defaut recherche le dossier ou ce trouve *ft_printf.h* et *libft.h*)
 * Petite animation d'attente lors du test de la norme (*N*)
+* Jauge de reussite et d'echec des tests
+* Mode "Only printf" permetant de tester le comportement de printf sans compiler notre projet
 
 ##### Indisponible *(en cours ou prochainement)*
 * Chaque nouveau test creerons un nouveau dossier avec:  
@@ -56,7 +64,6 @@ Cela permetra les comparaisons automatiques des sorties standards
 * Triage des tests par types en dossier  
 vous pourez donc choisir dans quel dossier creer votre test, de le retrouver plus facilement et pouvoir faire les tests d'un type specifique uniquement  
 ex: *type_d/* Tout les tests pour le *%d*
-* Jauge de reussite et d'echec des tests
 
 ### Pour tester fdf [*(autofdf)*][autofdf]
 L'option *o* vous permet de comparer et lancer automatiquement des maps de tests avec le fdf de demonstration  
