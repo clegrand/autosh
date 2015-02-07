@@ -6,7 +6,7 @@
 #    By: clegrand <clegrand@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2014/12/16 13:57:59 by clegrand          #+#    #+#              #
-#    Updated: 2015/01/28 21:13:45 by clegrand         ###   ########.fr        #
+#    Updated: 2015/02/07 18:06:13 by clegrand         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,7 @@ EBROWN='echo \033[0;33m'
 ENC='echo \033[0;37m'
 
 NAME='ft_printf'
-VER='(V3.72.M2)'
+VER='(V3.73.M2)'
 BY='By clegrand'
 PATHO="c_${NAME}_"
 GIT="vogsphere@vogsphere.42.fr:intra/2014/activities/${NAME}/"
@@ -44,6 +44,7 @@ printf "$(screen_delturn 5)${GREEN}(Ok!)${NC}\n"
 if [ -e ../${PATHO}$1 ]; then
 	clear
 	printf "${GREEN}$1 exist ! ${NC}\n"
+	PROJ=../${PATHO}$1
 else
 	printf "${BROWN}Directory ${PURPLE}${PATHO}$1 ${BROWN}does not exist, you want to create git file ? y: for yes${NC}\n"
 	read -s -n 1 git
@@ -53,9 +54,9 @@ else
 			clear
 			printf "${GREEN}Great: git succes ! ${PURPLE}${PATHO}$1 ${GREEN}created ${NC}\n"
 			PROJ=../${PATHO}$1
-			grep $1 -v $(cat ${PATHO}/auteur)
-			if [ $? = 0 ]; then
-				printf "${RED}[Error author]> ${NC}File author incorect: ${RED}$1 ${NC}and ${RED}$(cat ${PROJ}/auteur) ${NC}!\n"
+			cat ${PROJ}/auteur | grep $1 > /dev/null
+			if [ $? != 0 ]; then
+				printf "${RED}$(meta_alert "Error author") ${NC}File author incorect: ${RED}$1 ${NC}and ${RED}$(cat ${PROJ}/auteur) ${NC}!\n"
 			fi
 		else
 			printf "${RED}[Error git]> ${NC}Fail git, check good arg: ${RED}$1 ${NC}:|\n"
@@ -73,6 +74,7 @@ NORME_SIZE=11
 MAKE_SIZE=10
 FUNCT_SIZE=12
 DELET_SIZE=11
+MES_SIZE=15
 DSRC='*'
 DINC='inc'
 DLIB='libft'
@@ -336,13 +338,13 @@ COLOR_MENU=(${TAB_COLOR[*]})
 		if [ .t_auto${NAME}.sh -ot auto${NAME}.sh ] || [ -f ${PROJ}/${LPRINTF} ] || [ -f ${PROJ}/libft/libft.a ]; then
 		printf "\n$(meta_message "MESSAGE")\n"
 		if [ .t_auto${NAME}.sh -ot auto${NAME}.sh ]; then
-		printf "${BROWN}$(meta_alert "MAJ Available !")${NC} Choice 'q' and relanch or 'j' auto${NAME} for quit version ${BROWN}$(grep "V" .t_auto${NAME}.sh | cut -d"(" -f2 | cut -d")" -f1) ${NC}and use version ${BROWN}$(grep "VER='" auto${NAME}.sh | sed -n 1p | cut -d"(" -f2 | cut -d")" -f1) ${NC}\n"
+		printf "${BROWN}$(meta_alert "MAJ Available !" ${MES_SIZE})${NC} Choice 'q' and relanch or 'j' auto${NAME} for quit version ${BROWN}$(grep "V" .t_auto${NAME}.sh | cut -d"(" -f2 | cut -d")" -f1) ${NC}and use version ${BROWN}$(grep "VER='" auto${NAME}.sh | sed -n 1p | cut -d"(" -f2 | cut -d")" -f1) ${NC}\n"
 		fi
 		if [ -f ${PROJ}/${LPRINTF} ]; then
-		printf "${GREEN}$(meta_alert "OPEN lib")${NC} The lib ${GREEN}${LPRINTF} ${NC}exist in ${GREEN}${PROJ} ${NC}\n"
+		printf "${GREEN}$(meta_alert "OPEN lib" ${MES_SIZE})${NC} The lib ${GREEN}${LPRINTF} ${NC}exist in ${GREEN}${PROJ} ${NC}\n"
 		fi
 		if [ -f ${PROJ}/libft/libft.a ]; then
-		printf "${GREEN}$(meta_alert "OPEN libft.a")${NC} The lib ${GREEN}libft.a ${NC}is available\n"
+		printf "${GREEN}$(meta_alert "OPEN libft.a" ${MES_SIZE})${NC} The lib ${GREEN}libft.a ${NC}is available\n"
 		fi
 		fi
 		printf "$(meta_menu "${MENU[@]}")\n"
