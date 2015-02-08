@@ -31,6 +31,7 @@ Dans les parametres *P* vous pouvez (en plus des options de base):
 * Modifier le mode de creation de test:
 	* `Normal`: Creer des test et les sauvegardes
 	* `Only printf`: Test uniquement le printf de base
+	* `Select test`: Choix du test
 
 #### Utilisation de l'option *U*
 Pour creer un test et le sauvegarder suivez les instructions suivantes:
@@ -49,7 +50,8 @@ Vous pouvez ecrire votre test (ex: `"test %d: %10s -> %4d", 1, "Salut", 42`) pui
 (par defaut recherche le dossier ou ce trouve *ft_printf.h* et *libft.h*)
 * Petite animation d'attente lors du test de la norme (*N*)
 * Jauge de reussite et d'echec des tests
-* Mode "Only printf" permetant de tester le comportement de printf sans compiler notre projet
+* Mode "Only printf" permetant de tester le comportement de printf sans compiler votre projet
+* Mode "Select test" permetant de tester un test au choix
 
 ##### Indisponible *(en cours ou prochainement)*
 * Chaque nouveau test creerons un nouveau dossier avec:  
