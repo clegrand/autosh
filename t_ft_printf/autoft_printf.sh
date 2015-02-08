@@ -6,7 +6,7 @@
 #    By: clegrand <clegrand@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2014/12/16 13:57:59 by clegrand          #+#    #+#              #
-#    Updated: 2015/02/08 15:37:56 by clegrand         ###   ########.fr        #
+#    Updated: 2015/02/08 22:02:01 by clegrand         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,13 +21,14 @@ EBROWN='echo \033[0;33m'
 ENC='echo \033[0;37m'
 
 NAME='ft_printf'
-VER='(V3.74.M2)'
+VER='(V3.75.M2)'
 BY='By clegrand'
 PATHO="c_${NAME}_"
 GIT="vogsphere@vogsphere.42.fr:intra/2014/activities/${NAME}/"
 
 tput civis
 
+if [[ "$2" != "--relaunch" ]]; then
 git pull > lastmaj.txt 2> lastmaj.txt &
 pid_norme=$!
 i=0
@@ -40,6 +41,7 @@ while [[ $? = 0 ]]; do
 	kill -0 ${pid_norme} 2> /dev/null
 done
 printf "$(screen_delturn 5)${GREEN}(Ok!)${NC}\n"
+fi
 
 if [ -e ../${PATHO}$1 ]; then
 	clear
@@ -288,18 +290,6 @@ while [ ${choice} != q ]; do
 	elif [ ${choice} = p ]; then # OPTION
 		clear
 		printf "$(meta_message "OPTION ${VER}")\n"
-		git pull > lastmaj.txt 2> lastmaj.txt &
-		pid_norme=$!
-		i=0
-		kill -0 ${pid_norme}
-		printf "I check if new version is available of ${PURPLE}${NAME}${NC} "
-		while [[ $? = 0 ]]; do
-			printf "$(time_wait $i)"
-			sleep 0.2
-			i=$((i+1))
-			kill -0 ${pid_norme} 2> /dev/null
-		done
-		printf "$(screen_delturn 5)(Ok!)\n"
 		printf "\nChange name of header for ${NAME} ? Actual ${PURPLE}${PRINTFH}${NC} y: for yes\n"
 		read -s -n 1 path
 		if [ ${path} = y ]; then
@@ -330,8 +320,8 @@ while [ ${choice} != q ]; do
 			BORDER='off'
 			COLOR_MENU=(${WHITE})
 			printf "$(meta_menu "1-Normal" "2-Only printf" "3-Select test")\n"
-			printf "${YELLOW}$(meta_alert "Warning") Only printf not save test${NC}\n"
-			printf "${YELLOW}$(meta_alert "Warning") Select test can't create test${NC}\n"
+			printf "${YELLOW}$(meta_alert "Warning") \"Only printf\" not save test${NC}\n"
+			printf "${YELLOW}$(meta_alert "Warning") \"Select test\" can't create test${NC}\n"
 			read -s -n 1 MODETEST
 			while [[ ${MODETEST} -lt 1 ]] || [[ ${MODETEST} -gt 3 ]]; do
 				printf "Select option:\n$(meta_menu "1-Normal" "2-Only printf" "3-Select test")\n"
@@ -349,13 +339,25 @@ while [ ${choice} != q ]; do
 		fi
 		clear
 	elif [[ ${choice} = j ]]; then
+		clear
+		printf "${BG_YELLOW}$(meta_title "relaunch mode")${NC}\n"
+		git pull > lastmaj.txt 2> lastmaj.txt &
+		pid_norme=$!
+		i=0
+		kill -0 ${pid_norme}
+		printf "${BG_YELLOW}I check if new version is available for ${BG_BLUE}${NAME}${BG_YELLOW} ${BG_RED}"
+		while [[ $? = 0 ]]; do
+			printf "$(time_wait $i)"
+			sleep 0.2
+			i=$((i+1))
+			kill -0 ${pid_norme} 2> /dev/null
+		done
+		printf "$(screen_delturn 5)${BG_GREEN}(Ok!)${NC}\n"
 		if [[ .t_auto${NAME}.sh -ot auto${NAME}.sh ]]; then
 			rm -f .t_auto${NAME}.sh
-			bash auto${NAME}.sh ${PROJ}
+			bash auto${NAME}.sh ${PROJ} "--relaunch"
 			exit 0
 		else
-			clear
-			printf "${BG_YELLOW}$(meta_title "relaunch mode")${NC}\n"
 			printf "${GREEN}$(meta_alert "No relaunch") Is up to date :)${NC}\n"
 		fi
 	else

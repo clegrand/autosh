@@ -46,7 +46,7 @@ Vous pouvez ecrire votre test (ex: `"test %d: %10s -> %4d", 1, "Salut", 42`) pui
 #### Ameliorations
 
 ##### Disponible *(ajouter)*
-* Recherche automatiquement les header (plus besoins d'aller dans les parametres (*P*) pour modifier leur dossier)  
+* Recherche automatiquement les headers (plus besoin d'aller dans les parametres (*P*) pour modifier leur dossier)  
 (par defaut recherche le dossier ou ce trouve *ft_printf.h* et *libft.h*)
 * Petite animation d'attente lors du test de la norme (*N*)
 * Jauge de reussite et d'echec des tests
@@ -94,7 +94,7 @@ Une fois fini vous pouvez utiliser les main de test de l'Autosh commencant par `
 > Si l'Autosh se termine bien, il nettoie les *.o* pour pouvoir naviguer plus facilement
 
 #### Partie 1
-La verification est manuel par comparaison par apport a la vrai fonction:  
+La verification est manuel par comparaison  
 Vous pouvez directement reperer 2 lignes pour chaque test et verifier si elle son identique  
 `Libc: return_of_function` Retour de la fonction de base  
 `Out : return_of_function` Retour de la fonction a tester
