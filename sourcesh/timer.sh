@@ -6,13 +6,16 @@
 #    By: clegrand <clegrand@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/01/27 20:11:15 by clegrand          #+#    #+#              #
-#    Updated: 2015/01/27 21:40:22 by clegrand         ###   ########.fr        #
+#    Updated: 2015/02/14 21:51:00 by clegrand         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 source ../sourcesh/screen_func.sh
 source ../sourcesh/meta_skin.sh
 
+TIME_DEFAULT=0.2
+
+# 1: Stage of animation
 function time_wait
 {
 	if [[ $1 -eq 0 ]]; then
@@ -29,6 +32,7 @@ function time_wait
 	fi
 }
 
+# 1: Result | 2: Max result | [3: Max field]
 function time_result
 {
 	local -i max good
@@ -43,6 +47,32 @@ function time_result
 	fi
 	good=$(echo "scale=5;(${max}/$2)*$1" | bc | cut -d '.' -f 1)
 	printf "${BG_GREEN}$(lib_set ' ' ${good})${BG_RED}$(lib_set ' ' $((${max}-${good})))${NC}\n"
+	return 0
+}
+
+# 1: Pid | 2: Funciton animation | [3: Check time]
+function time_waitpid
+{
+	local -i i
+	local time
+	if [[ $# -lt 2 ]]; then
+		return 1
+	fi
+	if [[ $(echo "scale=5;$3" | bc | tr -d '.') -gt 0 ]]; then
+		time=$3
+	else
+		time=${TIME_DEFAULT}
+	fi
+	i=0
+	printf "$(time_wait $i)"
+	sleep $time
+	kill -0 $1 2> /dev/null
+	while [[ $? -eq 0 ]]; do
+		i=$(($i+1))
+		printf "$(time_wait $i)"
+		sleep $time
+		kill -0 $1 2> /dev/null
+	done
 	return 0
 }
 

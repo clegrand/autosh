@@ -6,7 +6,7 @@
 #    By: clegrand <clegrand@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/01/25 14:30:46 by clegrand          #+#    #+#              #
-#    Updated: 2015/01/27 19:56:41 by clegrand         ###   ########.fr        #
+#    Updated: 2015/02/15 19:01:52 by clegrand         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -49,6 +49,7 @@ TAB_COLOR5=(${WHITE} ${BG_WHITE})
 # OPTIONS
 BORDER='on' #on: Active border line
 LEF_BOR_DEF=5 #Default size for left border
+RIG_BOR_DEF=5 #Default size for right border
 ALE_DEF=15 #Default size for align
 COLOR_MENU=(${TAB_COLOR[*]}) #Defaut variant of color
 
@@ -115,11 +116,32 @@ function meta_alert
 	return 0
 }
 
+# 1: Title
 function meta_title
 {
 	printf "$(screen_center "/$1\\" '_')\n"
 	printf "$(screen_center "\\$(lib_set '_' ${#1})/")\n"
 	return 0
+}
+
+# 1: End title | [2: Size of right border]
+function meta_end
+{
+	local -i in_border columns
+	local text
+	text=" $1 "
+	columns=$(screen_columns)
+	if [[ $2 -gt 0 ]]; then
+		in_border=$2
+	else
+		in_border=${RIG_BOR_DEF}
+	fi
+	if [[ ${BORDER} = 'on' ]] && [[ $(((${in_border}*2)+${#text})) -le ${columns} ]]; then
+		columns=$((${columns}-(${in_border}*2)-${#text}))
+	else
+		columns=0
+	fi
+	printf "$(lib_set '_' $((${columns}+${in_border})))${text}$(lib_set '_' ${in_border})\n"
 }
 
 # Test
