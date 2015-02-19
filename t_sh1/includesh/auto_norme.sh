@@ -66,20 +66,22 @@ function n_nm
 	printf "${YELLOW}$(meta_alert "Nm" $1) "
 	time_waitpid $! 'time_wait'
 	printf "$(screen_delturn 5)"
+	# Reference of this line (down): detect2.sh
 	cat ${FILENM} | grep U | grep -v ft_ | cut -d _ -f2 | sort -u > ${FILENM}
+	cat ${FILENM} > ${FILENM}-tmp
 	i=0
 	while [[ $i -lt ${#TAB_NM[@]} ]]; do
-		cat ${FILENM} | grep -v "${TAB_NM[$i]}" > ${FILENM}-tmp
-		cat ${FILENM}-tmp > ${FILENM}
+		cat ${FILENM}-tmp | grep -v "${TAB_NM[$i]}" > ${FILENM}-speed
+		cat ${FILENM}-speed > ${FILENM}-tmp
 		i=$(($i+1))
 	done
-	rm -f ${FILENM}-tmp
-	line=$(cat ${FILENM} | wc -l | tr -d ' ')
+	rm -f ${FILENM}-speed
+	line=$(cat ${FILENM}-tmp | wc -l | tr -d ' ')
 	if [[ ${line} -gt 0 ]]; then
 		i=0
 		ret=0
 		while [[ $i -lt ${#WAR_NM[@]} ]]; do
-			cat ${FILENM} | grep "${WAR_NM[$i]}" > /dev/null
+			cat ${FILENM}-tmp | grep "${WAR_NM[$i]}" > /dev/null
 			if [[ $? -eq 0 ]]; then
 				ret=$((ret+1))
 			fi
@@ -88,20 +90,23 @@ function n_nm
 		if [[ ${ret} -gt 0 ]]; then
 			printf "${RED}(Ko!)${NC}\n"
 			printf "${RED2}$(meta_message "Wanted function")${RED}\n"
-			cat ${FILENM}
-			printf "${RED2}$(meta_end "End ${FILENM##*/}")${NC}\n"
+			cat ${FILENM}-tmp
+			printf "${RED2}$(meta_end "End ${FILENM-tmp##*/}")${NC}\n"
 			printf "${RED}$(meta_alert "Nm result" $1)${NC} You have use ${RED}$((${line}-${ret}))${NC} unknow function and ${RED}${ret}${NC} wanted function\n"
+			rm -f ${FILENM}-tmp
 			return 1
 		fi
 		printf "${YELLOW}(End)${NC}\n"
 		printf "${YELLOW}$(meta_message "NM file")${NC}\n"
-		cat ${FILENM}
-		printf "${YELLOW}$(meta_end "End ${FILENM##*/}")${NC}\n"
-		printf "${YELLOW}$(meta_alert "Nm result" $1)${NC} You have ${YELLOW}$(cat ${FILENM} | wc -l | tr -d ' ')${NC} unknow function\n"
+		cat ${FILENM}-tmp
+		printf "${YELLOW}$(meta_end "End ${FILENM-tmp##*/}")${NC}\n"
+		printf "${YELLOW}$(meta_alert "Nm result" $1)${NC} You have ${YELLOW}$(cat ${FILENM}-tmp | wc -l | tr -d ' ')${NC} unknow function\n"
+		rm -f ${FILENM}-tmp
 		return 1
 	else
 		printf "${GREEN}(Ok!)${NC}\n"
 		printf "${GREEN}$(meta_alert "Function ok" $1)${NC} You use in ${GREEN}${NAME}${NC} correct function\n"
 	fi
+	rm -f ${FILENM}-tmp
 	return 0
 }

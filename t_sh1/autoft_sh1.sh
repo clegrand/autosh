@@ -21,7 +21,7 @@ source includesh/auto_function.sh
 source includesh/auto_option.sh
 
 NAME='ft_minishell1'
-VER='(V3.3.sh1)'
+VER='(V3.4.sh1)'
 BY='By clegrand'
 
 # option default
@@ -50,8 +50,8 @@ TAB_DELET=(${DTMP})
 BEFORE=('')
 AFTER=('')
 ORIGIN_AUTHOR="${USER}"
-TAB_NM=('free' 'malloc' 'read' 'write' 'chdir' 'getcwd' 'execve' 'fork' 'wait' 'waitpid' 'wait3' 'wait4' 'stub')
-WAR_NM=('printf' 'getenv')
+TAB_NM=('^free$' '^exit$' '^malloc$' '^opendir$' '^readdir$' '^closedir$' '^stat$' '^lstat$' '^fstat$' '^open$' '^close$' '^read$' '^write$' '^chdir$' '^getcwd$' '^execve$' '^access$' '^signal$' '^kill$' '^fork$' '^wait$' '^waitpid$' '^wait3$' '^wait4$' '^stub$')
+WAR_NM=('^printf$' '^getenv$' '^putenv$')
 
 tput civis
 
