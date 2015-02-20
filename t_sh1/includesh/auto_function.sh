@@ -7,7 +7,7 @@
 function u_launch
 {
 	printf "${PURPLE}$(meta_alert "Launcher" $1)${NC} Exec: ${PURPLE}${BEFORE[@]}${NC} ./${NAME} ${PURPLE}${AFTER[@]}${NC}:\n"
-	printf "${BLUE}$(meta_message "Launch ${NAME}")${NC}"
+	printf "${BLUE}$(meta_message "Launch ${NAME}")${NC}\n"
 	tput cnorm
 	${BEFORE[@]} ${PROJ}/${NAME} ${AFTER[@]}
 	ret=$?
