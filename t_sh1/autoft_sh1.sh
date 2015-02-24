@@ -26,7 +26,7 @@ BY='By clegrand'
 
 # option default
 O_MENU=(1-Path 2-Before 3-After 4-Author)
-O_MESSAGE=("Change relative or absolute path for project" "Change before option for execute" "change after option for execute" "Original author for check auteur file")
+O_MESSAGE=("Change relative or absolute path for project" "Change before option for execute" "Change after option for execute" "Original author for check auteur file")
 MENU=(F-Files N-Norme M-Make U-Function D-Delete)
 PROJ=$1
 AUT='auteur'
@@ -50,8 +50,8 @@ TAB_DELET=(${DTMP})
 BEFORE=('')
 AFTER=('')
 ORIGIN_AUTHOR="${USER}"
-TAB_NM=('^free$' '^exit$' '^malloc$' '^opendir$' '^readdir$' '^closedir$' '^stat$' '^lstat$' '^fstat$' '^open$' '^close$' '^read$' '^write$' '^chdir$' '^getcwd$' '^execve$' '^access$' '^signal$' '^kill$' '^fork$' '^wait$' '^waitpid$' '^wait3$' '^wait4$' '^stub$')
-WAR_NM=('^printf$' '^getenv$' '^putenv$')
+TAB_NM=('^free$' '^exit$' '^malloc$' '^opendir$' '^readdir$' '^closedir$' '^stat$' '^lstat$' '^fstat$' '^open$' '^close$' '^read$' '^write$' '^chdir$' '^getcwd$' '^execve$' '^access$' '^signal$' '^kill$' '^fork$' '^wait$' '^waitpid$' '^wait3$' '^wait4$' '^stub$' '^stat\$INODE64$')
+WAR_NM=('^printf$' '^puts$' '^getenv$' '^putenv$')
 
 tput civis
 
