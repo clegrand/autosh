@@ -51,6 +51,10 @@ function n_norminette
 		printf "${RED2}$(meta_end "End ${FILENORME##*/}")${NC}\n"
 		printf "${RED}$(meta_alert "Error norme" $1)${NC} You have ${RED}$(grep -v "Norme: " ${FILENORME} | wc -l | tr -d ' ')${NC} error\n"
 		return 1
+	elif [[ $(cat ${FILENORME} | wc -l | tr -d ' ') -eq 0 ]]; then
+		printf "${YELLOW}(End)${NC}\n"
+		printf "${YELLOW}$(meta_alert "Unknow norme" $1)${NC} No file checked\n"
+		return 1
 	else
 		printf "${GREEN}(Ok!)${NC}\n"
 		printf "${GREEN}$(meta_alert "Norme ok" $1)${NC} Your norme of ${GREEN}${NAME}${NC} is good\n"
