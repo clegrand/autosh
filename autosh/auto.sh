@@ -21,7 +21,7 @@ source includesh/auto_function.sh
 source includesh/auto_option.sh
 
 NAME='auto'
-VER="(V3.0.${NAME})"
+VER="(V3.1.${NAME})"
 BY='By clegrand'
 
 # option default
@@ -54,8 +54,8 @@ TAB_DELET=(${DTMP})
 BEFORE=('')
 AFTER=('')
 ORIGIN_AUTHOR="${USER}"
-TAB_NM=('^$')
-WAR_NM=('^printf$' '^puts$')
+TAB_NM=('^$') # Allowed functions
+WAR_NM=('^printf$' '^dprintf$' '^puts$') # Non autorized functions
 
 tput civis
 

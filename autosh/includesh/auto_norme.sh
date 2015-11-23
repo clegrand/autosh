@@ -39,7 +39,7 @@ function n_author
 # [1: Size for function meta_alert]
 function n_norminette
 {
-	norminette ${PROJ}/* | grep -v ": Norminette can't check this file\.$" > ${FILENORME} &
+	norminette ${PROJ}/* | grep -v "^Warning: Not a valid file$" | grep -B 1 -v "^Norme: " > ${FILENORME} &
 	printf "${YELLOW}$(meta_alert "Norminette" $1) "
 	time_waitpid $! 'time_wait'
 	printf "$(screen_delturn 5)"
