@@ -6,9 +6,16 @@
 #    By: clegrand <clegrand@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/01/25 14:30:46 by clegrand          #+#    #+#              #
-#    Updated: 2015/02/15 19:01:52 by clegrand         ###   ########.fr        #
+#    Updated: 2015/12/20 16:38:26 by clegrand         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
+
+# . source_file.sh
+if [[ -z $SOURCESH ]]; then
+	SOURCESH=.
+fi
+source $SOURCESH/screen_func.sh
+source $SOURCESH/lib_base.sh
 
 # Color
 BLACK='\033[0;30m'
@@ -52,10 +59,6 @@ LEF_BOR_DEF=5 #Default size for left border
 RIG_BOR_DEF=5 #Default size for right border
 ALE_DEF=15 #Default size for align
 COLOR_MENU=(${TAB_COLOR[*]}) #Defaut variant of color
-
-# . source_file.sh
-source ../sourcesh/screen_func.sh
-source ../sourcesh/lib_base.sh
 
 # Create menu Meta version
 function meta_menu

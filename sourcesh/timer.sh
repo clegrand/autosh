@@ -6,12 +6,17 @@
 #    By: clegrand <clegrand@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/01/27 20:11:15 by clegrand          #+#    #+#              #
-#    Updated: 2015/02/14 21:51:00 by clegrand         ###   ########.fr        #
+#    Updated: 2015/12/20 16:38:14 by clegrand         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-source ../sourcesh/screen_func.sh
-source ../sourcesh/meta_skin.sh
+
+# . source_file.sh
+if [[ -z $SOURCESH ]]; then
+	SOURCESH=.
+fi
+source $SOURCESH/screen_func.sh
+source $SOURCESH/meta_skin.sh
 
 TIME_DEFAULT=0.2
 

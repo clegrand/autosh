@@ -2,7 +2,7 @@
 # **************************************************************************** #
 #                                                                              #
 #                                                         :::      ::::::::    #
-#    autoft.sh                                          :+:      :+:    :+:    #
+#    auto.sh                                            :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
 #    By: clegrand <clegrand@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
@@ -11,14 +11,21 @@
 #                                                                              #
 # **************************************************************************** #
 
-source ../sourcesh/screen_func.sh
-source ../sourcesh/meta_skin.sh
-source ../sourcesh/lib_base.sh
-source ../sourcesh/timer.sh
-source includesh/auto_all.sh
-source includesh/auto_norme.sh
-source includesh/auto_function.sh
-source includesh/auto_option.sh
+if [[ -z $SOURCESH ]]; then
+	SOURCESH=.
+fi
+if [[ -z $INCLUDESH ]]; then
+	INCLUDESH=.
+fi
+
+source $SOURCESH/screen_func.sh
+source $SOURCESH/meta_skin.sh
+source $SOURCESH/lib_base.sh
+source $SOURCESH/timer.sh
+source $INCLUDESH/auto_all.sh
+source $INCLUDESH/auto_norme.sh
+source $INCLUDESH/auto_function.sh
+source $INCLUDESH/auto_option.sh
 
 NAME='auto'
 VER="(V3.1.${NAME})"
@@ -44,7 +51,7 @@ P_SIZE=10
 LOG_SIZE=8
 
 # File default
-DTMP='auto_tmp'
+DTMP='.auto_tmp'
 FILEAUTHOR="${DTMP}/author.txt"
 FILENORME="${DTMP}/norme.txt"
 FILENM="${DTMP}/nm.txt"
