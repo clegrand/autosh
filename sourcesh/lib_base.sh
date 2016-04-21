@@ -22,6 +22,39 @@ function lib_set
 	return 0
 }
 
+# $*=words
+function lib_lenmax
+{
+    local -i m tmp
+    local -a words
+    words=$*
+    m=0
+    for word in ${words[@]}; do
+        tmp=${#word}
+        if [ $tmp -gt $m ]; then
+            m=$tmp
+        fi
+    done
+    echo $m
+    return 0
+}
+
+# $1: current $2: max [$3: min]
+function lib_limit
+{
+    local -i m
+    if [ $# -lt 2 ]; then
+        return 1
+    elif [ $# -gt 2 ]; then
+        m=$3
+    else
+        m=0
+    fi
+    i=$(($1-$m))
+    echo $((($1%$2)+$m))
+    return 0
+}
+
 # Test
 
 #if [[ $# -lt 2 ]]; then

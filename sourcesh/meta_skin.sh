@@ -60,6 +60,22 @@ RIG_BOR_DEF=5 #Default size for right border
 ALE_DEF=15 #Default size for align
 COLOR_MENU=(${TAB_COLOR[*]}) #Defaut variant of color
 
+# 1: loop_selection [; 2: color_tab]
+function meta_color
+{
+    local -a tab_color_select
+    if [ $# -lt 1 ]; then
+        return 1
+    elif [ $# -gt 1 ]; then
+        tab_color_select=("$@")
+        tab_color_select=("${tab_color_select[@]:1}")
+    else
+        tab_color_select=(${COLOR_MENU[@]})
+    fi
+    echo ${tab_color_select[$(lib_limit $1 ${#tab_color_select[@]})]}
+    return 0
+}
+
 # Create menu Meta version
 function meta_menu
 {
@@ -69,7 +85,7 @@ function meta_menu
 	i=0
 	max=0
 	while [[ $i -lt ${#tab_arg[*]} ]]; do
-		printf "${COLOR_MENU[$((($i%${#COLOR_MENU[*]})))]} ${tab_arg[$i]} ${NC}"
+		printf "$(meta_color $i) ${tab_arg[$i]} ${NC}"
 		max=$((${max}+${#tab_arg[$i]}+2))
 		i=$((i+1))
 	done
@@ -80,7 +96,7 @@ function meta_menu
 	fi
 	i=0
 	while [[ $i -lt ${#tab_arg[*]} ]]; do
-		printf "${COLOR_MENU[$((($i%${#COLOR_MENU[*]})))]}\\$(lib_set '_' ${#tab_arg[$i]})/${NC}"
+		printf "$(meta_color $i)\\$(lib_set '_' ${#tab_arg[$i]})/${NC}"
 		i=$((i+1))
 	done
 	printf "\n"
@@ -117,6 +133,31 @@ function meta_alert
 	arg=$1
 	printf "[${arg:0:${max}}$(lib_set ' ' $((${max}-${#arg})))]>\n"
 	return 0
+}
+
+# !*%2: title | *%2: description
+function meta_alerts
+{
+    local -i i m
+    local -a tab tmp
+    i=0
+    if [ $(($#%2)) -ne 0 ]; then
+        return 1
+    fi
+    tmp=()
+    tab=("$@")
+    while [ $i -lt ${#tab[@]} ]; do
+        tmp=(${tmp[@]} ${tab[$i]})
+        i=$((i+2))
+    done
+    i=0
+    m=$(lib_lenmax ${tmp[@]})
+    while [ $i -lt ${#tmp[@]} ]; do
+        printf "$(meta_color $i)$(meta_alert "$1" $m)$NC $2\n"
+        shift 2
+        i=$((i+1))
+    done
+    return 0
 }
 
 # 1: Title
