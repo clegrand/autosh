@@ -55,6 +55,21 @@ function lib_limit
     return 0
 }
 
+# $1: file_content
+function lib_filename
+{
+    local name
+    if [ $# -lt 1 ]; then
+        return 1
+    fi
+    name="$(basename "$1")"
+    if [ "${name:0:1}" == '.' ]; then
+        name="${name:1}"
+    fi
+    echo "${name%.*}"
+    return 0
+}
+
 # Test
 
 #if [[ $# -lt 2 ]]; then

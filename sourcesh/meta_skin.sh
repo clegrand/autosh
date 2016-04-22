@@ -59,6 +59,7 @@ LEF_BOR_DEF=5 #Default size for left border
 RIG_BOR_DEF=5 #Default size for right border
 ALE_DEF=15 #Default size for align
 COLOR_MENU=(${TAB_COLOR[*]}) #Defaut variant of color
+MENU_CHOICE='q'
 
 # 1: loop_selection [; 2: color_tab]
 function meta_color
@@ -101,6 +102,82 @@ function meta_menu
 	done
 	printf "\n"
 	return ${max}
+}
+
+# [$1: message;] !*%2: title; *%2: exec
+function meta_menus
+{
+    local -a index_tab title_tab exec_tab
+    local choice ck i mes
+    if [ $(($#%2)) -ne 0 ]; then
+        mes=$1
+        shift 1
+    else
+        mes=""
+    fi
+    i=1
+    index_tab=()
+    title_tab=()
+    exec_tab=()
+    while [ $# -gt 0 ]; do
+        index_tab=(${index_tab[@]} $(echo ${1:0:1} | tr "[:upper:]" "[:lower:]"))
+        if [ $i -le 10 ]; then
+            title_tab=(${title_tab[@]} "$(($i%10))-$1")
+        else
+            title_tab=(${title_tab[@]} "$1")
+        fi
+        exec_tab=(${exec_tab[@]} "$2")
+        i=$((i+1))
+        shift 2
+    done
+    ck=0
+    while [ $ck -ne 1 ]; do
+        ck=1
+        printf "$(meta_menu ${title_tab[@]})\n"
+        printf "$WHITE2$(meta_alert "$USER")$NC $mes\n"
+        read -n 1 -s -- choice
+        case $choice in
+            [0-9])
+                if [ "$choice" == '0' ]; then
+                    choice=10
+                fi
+                if [ $choice -gt ${#title_tab[@]} ]; then
+                    ck=0
+                fi
+                choice=$(($choice-1))
+                ;;
+            [a-z]|[A-Z])
+                ck=0
+                i=$((${#index_tab[@]}-1))
+                choice=$(echo $choice | tr "[:upper:]" "[:lower:]")
+                while [ $i -ge 0 ]; do
+                    if [ "$choice" == "${index_tab[$i]}" ]; then
+                        choice=$i
+                        ck=1
+                        break
+                    fi
+                    i=$(($i-1))
+                done
+                i=0
+                while [ $i -lt ${#MENU_CHOICE} ]; do
+                    if [ "$choice" == "${MENU_CHOICE:$i:1}" ]; then
+                        MENU_CHOICE="$choice"
+                        return 0
+                    fi
+                    i=$(($i+1))
+                done
+                ;;
+            ?)
+                ck=0
+                ;;
+        esac
+        if [ $ck -ne 1 ]; then
+            printf "\n$RED$(meta_alert "Bad choice")$NC $choice\n"
+        fi
+    done
+    MENU_CHOICE="$choice"
+    ${exec_tab[$choice]}
+    return 0
 }
 
 # $1=message $2=left_border(optional)
