@@ -104,11 +104,85 @@ function meta_menu
 	return ${max}
 }
 
+function meta_menu_choice {
+    local -a index_tab title_tab index_title_tab
+    local choice ck i mes tmp_choice
+    if [ $# -gt 0 ]; then
+        mes=$1
+        shift 1
+    else
+        return 1
+    fi
+    i=1
+    index_tab=()
+    title_tab=()
+    index_title_tab=()
+    while [ $# -gt 0 ]; do
+        index_tab=(${index_tab[@]} $(echo ${1:0:1} | tr "[:upper:]" "[:lower:]"))
+        index_title_tab=(${index_title_tab[@]} "$1")
+        if [ $i -le 10 ]; then
+            title_tab=(${title_tab[@]} "$(($i%10))-$1")
+        else
+            title_tab=(${title_tab[@]} "$1")
+        fi
+        i=$((i+1))
+        shift 1
+    done
+    ck=0
+    while [ $ck -ne 1 ]; do
+        ck=1
+        printf "$(meta_menu "${title_tab[@]}")\n"
+        printf "$WHITE2$(meta_alert "$USER")$NC $mes\n"
+        read -n 1 -s -- choice
+        case $choice in
+            [0-9])
+                if [ "$choice" == '0' ]; then
+                    choice=10
+                fi
+                if [ $choice -gt ${#title_tab[@]} ]; then
+                    ck=0
+                else
+                    choice=$(($choice-1))
+                fi
+                ;;
+            [a-z]|[A-Z])
+                ck=0
+                i=$((${#index_tab[@]}-1))
+                tmp_choice=$(echo $choice | tr "[:upper:]" "[:lower:]")
+                while [ $i -ge 0 ]; do
+                    if [ "$tmp_choice" == "${index_tab[$i]}" ]; then
+                        choice=$i
+                        ck=1
+                        break
+                    fi
+                    i=$(($i-1))
+                done
+                i=0
+                while [ $i -lt ${#MENU_CHOICE} ]; do
+                    if [ "$tmp_choice" == "${MENU_CHOICE:$i:1}" ]; then
+                        MENU_CHOICE="$choice"
+                        return 0
+                    fi
+                    i=$(($i+1))
+                done
+                ;;
+            ?)
+                ck=0
+                ;;
+        esac
+        if [ $ck -ne 1 ]; then
+            printf "\n$RED$(meta_alert "Bad choice")$NC $choice\n"
+        fi
+    done
+    MENU_CHOICE="${index_title_tab[$choice]}"
+    return 0
+}
+
 # [$1: message;] !*%2: title; *%2: exec
 function meta_menus
 {
     local -a index_tab title_tab exec_tab
-    local choice ck i mes
+    local choice ck i mes tmp_choice
     if [ $(($#%2)) -ne 0 ]; then
         mes=$1
         shift 1
@@ -133,7 +207,7 @@ function meta_menus
     ck=0
     while [ $ck -ne 1 ]; do
         ck=1
-        printf "$(meta_menu ${title_tab[@]})\n"
+        printf "$(meta_menu "${title_tab[@]}")\n"
         printf "$WHITE2$(meta_alert "$USER")$NC $mes\n"
         read -n 1 -s -- choice
         case $choice in
@@ -143,15 +217,16 @@ function meta_menus
                 fi
                 if [ $choice -gt ${#title_tab[@]} ]; then
                     ck=0
+                else
+                    choice=$(($choice-1))
                 fi
-                choice=$(($choice-1))
                 ;;
             [a-z]|[A-Z])
                 ck=0
                 i=$((${#index_tab[@]}-1))
-                choice=$(echo $choice | tr "[:upper:]" "[:lower:]")
+                tmp_choice=$(echo $choice | tr "[:upper:]" "[:lower:]")
                 while [ $i -ge 0 ]; do
-                    if [ "$choice" == "${index_tab[$i]}" ]; then
+                    if [ "$tmp_choice" == "${index_tab[$i]}" ]; then
                         choice=$i
                         ck=1
                         break
@@ -160,7 +235,7 @@ function meta_menus
                 done
                 i=0
                 while [ $i -lt ${#MENU_CHOICE} ]; do
-                    if [ "$choice" == "${MENU_CHOICE:$i:1}" ]; then
+                    if [ "$tmp_choice" == "${MENU_CHOICE:$i:1}" ]; then
                         MENU_CHOICE="$choice"
                         return 0
                     fi

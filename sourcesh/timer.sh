@@ -19,6 +19,7 @@ source $SOURCESH/screen_func.sh
 source $SOURCESH/meta_skin.sh
 
 TIME_DEFAULT=0.2
+TIME_F='time_wait'
 
 # 1: Stage of animation
 function time_wait
@@ -69,16 +70,24 @@ function time_waitpid
 		time=${TIME_DEFAULT}
 	fi
 	i=0
-	printf "$(time_wait $i)"
+	printf "$($2 $i)"
 	sleep $time
 	kill -0 $1 2> /dev/null
 	while [[ $? -eq 0 ]]; do
 		i=$(($i+1))
-		printf "$(time_wait $i)"
+		printf "$($2 $i)"
 		sleep $time
 		kill -0 $1 2> /dev/null
 	done
-	return 0
+    wait $1
+	return $?
+}
+
+# 1: Pid | [2: Check time]
+function time_defaultpid
+{
+    time_waitpid $1 $TIME_F $2
+    return $?
 }
 
 # TESTS
