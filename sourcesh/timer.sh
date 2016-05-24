@@ -15,6 +15,7 @@
 if [[ -z $SOURCESH ]]; then
 	SOURCESH=.
 fi
+source $SOURCESH/lib_base.sh
 source $SOURCESH/screen_func.sh
 source $SOURCESH/meta_skin.sh
 
@@ -27,15 +28,13 @@ function time_wait
 	if [[ $1 -eq 0 ]]; then
 		printf "(   )"
 	elif [[ $((($1%4)+1)) -eq 1 ]]; then
-		printf "$(screen_delturn 5)"
 		printf "(o  )"
 	elif [[ $((($1%4)+1)) -eq 2 ]] || [[ $((($1%4)+1)) -eq 4 ]]; then
-		printf "$(screen_delturn 5)"
 		printf "( o )"
 	else
-		printf "$(screen_delturn 5)"
 		printf "(  o)"
 	fi
+	printf "$(screen_turn_left 5)"
 }
 
 # 1: Result | 2: Max result | [3: Max field]
