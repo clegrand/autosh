@@ -62,6 +62,17 @@ function screen_delturn
 	done
 }
 
+function screen_turn_left {
+    local -i num_left
+    if [ $# -ge 1 ]; then
+        num_left=$1
+    else
+        num_left=$(screen_lines)
+    fi
+    lib_set "$LEFT" $num_left
+    return 0
+}
+
 function screen_deline
 {
 	printf "$(screen_delturn $(screen_lines))"

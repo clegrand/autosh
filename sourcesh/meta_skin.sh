@@ -252,7 +252,7 @@ function meta_menus
     done
     MENU_CHOICE="$choice"
     ${exec_tab[$choice]}
-    return 0
+    return $?
 }
 
 # $1=message $2=left_border(optional)
@@ -338,6 +338,22 @@ function meta_end
 		columns=0
 	fi
 	printf "$(lib_set '_' $((${columns}+${in_border})))${text}$(lib_set '_' ${in_border})\n"
+}
+
+# 1: pid
+function meta_wait {
+    local -i ret
+    if [ $# -lt 1 ]; then
+        return 1
+    fi
+    time_defaultpid $1
+    ret=$?
+    if [ $ret -eq 0 ]; then
+        printf "$GREEN(OK!)$NC\n"
+    else
+        printf "$RED(KO!)$NC\n"
+    fi
+    return $ret
 }
 
 # Test
