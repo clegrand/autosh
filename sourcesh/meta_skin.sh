@@ -6,7 +6,7 @@
 #    By: clegrand <clegrand@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/01/25 14:30:46 by clegrand          #+#    #+#              #
-#    Updated: 2015/02/15 19:01:52 by clegrand         ###   ########.fr        #
+#    Updated: 2016/03/02 18:20:04 by clegrand         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -54,8 +54,12 @@ ALE_DEF=15 #Default size for align
 COLOR_MENU=(${TAB_COLOR[*]}) #Defaut variant of color
 
 # . source_file.sh
-source ../sourcesh/screen_func.sh
-source ../sourcesh/lib_base.sh
+if [[ -z $SOURCESH ]]; then
+	SOURCESH=.
+fi
+
+source ${SOURCESH}/screen_func.sh
+source ${SOURCESH}/lib_base.sh
 
 # Create menu Meta version
 function meta_menu
