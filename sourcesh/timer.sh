@@ -6,14 +6,21 @@
 #    By: clegrand <clegrand@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/01/27 20:11:15 by clegrand          #+#    #+#              #
-#    Updated: 2015/02/14 21:51:00 by clegrand         ###   ########.fr        #
+#    Updated: 2015/12/20 16:38:14 by clegrand         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-source ../sourcesh/screen_func.sh
-source ../sourcesh/meta_skin.sh
+
+# . source_file.sh
+if [[ -z $SOURCESH ]]; then
+	SOURCESH=.
+fi
+source $SOURCESH/lib_base.sh
+source $SOURCESH/screen_func.sh
+source $SOURCESH/meta_skin.sh
 
 TIME_DEFAULT=0.2
+TIME_F='time_wait'
 
 # 1: Stage of animation
 function time_wait
@@ -21,15 +28,13 @@ function time_wait
 	if [[ $1 -eq 0 ]]; then
 		printf "(   )"
 	elif [[ $((($1%4)+1)) -eq 1 ]]; then
-		printf "$(screen_delturn 5)"
 		printf "(o  )"
 	elif [[ $((($1%4)+1)) -eq 2 ]] || [[ $((($1%4)+1)) -eq 4 ]]; then
-		printf "$(screen_delturn 5)"
 		printf "( o )"
 	else
-		printf "$(screen_delturn 5)"
 		printf "(  o)"
 	fi
+	printf "$(screen_turn_left 5)"
 }
 
 # 1: Result | 2: Max result | [3: Max field]
@@ -64,16 +69,24 @@ function time_waitpid
 		time=${TIME_DEFAULT}
 	fi
 	i=0
-	printf "$(time_wait $i)"
+	printf "$($2 $i)"
 	sleep $time
 	kill -0 $1 2> /dev/null
 	while [[ $? -eq 0 ]]; do
 		i=$(($i+1))
-		printf "$(time_wait $i)"
+		printf "$($2 $i)"
 		sleep $time
 		kill -0 $1 2> /dev/null
 	done
-	return 0
+    wait $1
+	return $?
+}
+
+# 1: Pid | [2: Check time]
+function time_defaultpid
+{
+    time_waitpid $1 $TIME_F $2
+    return $?
 }
 
 # TESTS

@@ -49,7 +49,7 @@ function n_norminette
 		printf "${RED2}$(meta_message "Error norme")${RED}\n"
 		cat ${FILENORME}
 		printf "${RED2}$(meta_end "End ${FILENORME##*/}")${NC}\n"
-		printf "${RED}$(meta_alert "Error norme" $1)${NC} You have ${RED}$(grep -v "Norme: " ${FILENORME} | wc -l | tr -d ' ')${NC} error\n"
+		printf "${RED}$(meta_alert "Error norme" $1)${NC} You have ${RED}$(grep -v "Norme: " ${FILENORME} | grep -v "^--$" | wc -l | tr -d ' ')${NC} error\n"
 		return 1
 	else
 		printf "${GREEN}(Ok!)${NC}\n"
@@ -67,7 +67,7 @@ function n_nm
 	time_waitpid $! 'time_wait'
 	printf "$(screen_delturn 5)"
 	# Reference of this line (down): detect2.sh
-	cat ${FILENM} | grep U | grep -v ft_ | cut -d _ -f2 | sort -u > ${FILENM}
+	cat ${FILENM} | grep U | grep -v ft_ | cut -d _ -f2- | sort -u > ${FILENM}
 	cat ${FILENM} > ${FILENM}-tmp
 	i=0
 	while [[ $i -lt ${#TAB_NM[@]} ]]; do
